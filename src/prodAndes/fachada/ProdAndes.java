@@ -167,7 +167,7 @@ public class ProdAndes {
 	public ArrayList<ReqPedidoProveedor> consultarPedidosProveedorXRangoFecha(String fechaPedido, String fechaEntrega) throws Exception{
 		return dao.consultarPedidosProveedorXRangoFecha(fechaPedido, fechaEntrega);
 	}
-	public ArrayList<ReqPedidoProveedor> consultarPedidosProveedorXIdPedido(String idPedido) throws Exception{
-		return dao.consultarPedidosProveedorXIdPedido(idPedido);
+	public ArrayList<ReqPedidoProveedor> consultarPedidosProveedorXMateriaRequerida(String nameMateria) throws Exception{
+		return dao.consultarPedidosProveedorXMateriaRequerida(nameMateria);
 	}
 }

@@ -36,7 +36,7 @@ public class ServletFiltrosTablas extends ServletTemplate{
 		String estado = request.getParameter("estado");
 		String fechaPedidoProveedores = request.getParameter("fechaPedidoProveedores");
 		String fechaEntregaProveedores = request.getParameter("fechaEntregaProveedores");
-		String idPedidoProveedor = request.getParameter("idPedidoProveedores");
+		String materialRequerido = request.getParameter("materialRequerido");
 		if(emailCliente!=null){
 			try{
 				imprimirTablasClientes(respuesta, emailCliente);
@@ -124,9 +124,9 @@ public class ServletFiltrosTablas extends ServletTemplate{
 				// TODO: handle exception
 			}
 		}
-		else if(idPedidoProveedor!=null){
+		else if(materialRequerido!=null){
 			try {
-				imprimirTablasPedidosProveedoresXIdPedido(respuesta, idPedidoProveedor);
+				imprimirTablasPedidosProveedoresXMateriaRequerida(respuesta, materialRequerido);
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -826,7 +826,7 @@ try {
 		respuesta.println("                    <form role=\"form\" action=\"ServletFiltrosTablas.htm\" method=\"get\">");
 		respuesta.println("");
 		respuesta.println("                            <div class=\"form-group\">");
-		respuesta.println("                                <label>Fecha</label>");
+		respuesta.println("                                <label>Fecha Entrega</label>");
 		respuesta.println("                                <input type=\"date\" class=\"form-control\" name=\"fechaPedido\" >");
 		respuesta.println("                            <br>");
 		respuesta.println("                                <input type=\"date\" class=\"form-control\" name=\"fechaEntrega\" >");
@@ -929,7 +929,7 @@ try {
 		respuesta.println("                    <form role=\"form\" action=\"ServletFiltrosTablas.htm\" method=\"get\">");
 		respuesta.println("");
 		respuesta.println("                            <div class=\"form-group\">");
-		respuesta.println("                                <label>Fecha</label>");
+		respuesta.println("                                <label>Fecha Entrega</label>");
 		respuesta.println("                                <input type=\"date\" class=\"form-control\" name=\"fechaPedido\" >");
 		respuesta.println("                            <br>");
 		respuesta.println("                                <input type=\"date\" class=\"form-control\" name=\"fechaEntrega\" >");
@@ -1031,7 +1031,7 @@ try {
 		respuesta.println("                    <form role=\"form\" action=\"ServletFiltrosTablas.htm\" method=\"get\">");
 		respuesta.println("");
 		respuesta.println("                            <div class=\"form-group\">");
-		respuesta.println("                                <label>Fecha</label>");
+		respuesta.println("                                <label>Fecha Entrega </label>");
 		respuesta.println("                                <input type=\"date\" class=\"form-control\" name=\"fechaPedido\" >");
 		respuesta.println("                            <br>");
 		respuesta.println("                                <input type=\"date\" class=\"form-control\" name=\"fechaEntrega\" >");
@@ -1148,8 +1148,8 @@ try {
 			respuesta.println("                    <form role=\"form\" action=\"ServletFiltrosTablas.htm\" method=\"get\">");
 			respuesta.println("");
 			respuesta.println("                            <div class=\"form-group\">");
-			respuesta.println("                                <label>Id Pedido</label>");
-			respuesta.println("                                <input class=\"form-control\" name=\"idPedidoProveedores\" placeholder=\"Ingrese pedido\">");
+			respuesta.println("                                <label>Material Requerido</label>");
+			respuesta.println("                                <input class=\"form-control\" name=\"materialRequerido\" placeholder=\"Ingrese material requerido\">");
 			respuesta.println("                            </div>");
 			respuesta.println("                            	   <button type=\"submit\" class=\"btn btn-primary\">Consultar</button>");
 			respuesta.println("                                <button type=\"reset\" class=\"btn btn-primary\">Reset</button>");
@@ -1258,8 +1258,8 @@ try {
 			respuesta.println("                    <form role=\"form\" action=\"ServletFiltrosTablas.htm\" method=\"get\">");
 			respuesta.println("");
 			respuesta.println("                            <div class=\"form-group\">");
-			respuesta.println("                                <label>Id Pedido</label>");
-			respuesta.println("                                <input class=\"form-control\" name=\"idPedidoProveedores\" placeholder=\"Ingrese pedido\">");
+			respuesta.println("                                <label>Material Requerido</label>");
+			respuesta.println("                                <input class=\"form-control\" name=\"materialRequerido\" placeholder=\"Ingrese material requerido\">");
 			respuesta.println("                            </div>");
 			respuesta.println("                            	   <button type=\"submit\" class=\"btn btn-primary\">Consultar</button>");
 			respuesta.println("                                <button type=\"reset\" class=\"btn btn-primary\">Reset</button>");
@@ -1309,10 +1309,10 @@ try {
 			// TODO: handle exception
 		}
 	}
-	private void imprimirTablasPedidosProveedoresXIdPedido(PrintWriter respuesta, String idPedido) throws Exception{
+	private void imprimirTablasPedidosProveedoresXMateriaRequerida(PrintWriter respuesta, String materiaRequerida) throws Exception{
 		try{
 			
-			ArrayList<ReqPedidoProveedor> pedidos = ProdAndes.darInstancia().consultarPedidosProveedorXIdPedido(idPedido);
+			ArrayList<ReqPedidoProveedor> pedidos = ProdAndes.darInstancia().consultarPedidosProveedorXMateriaRequerida(materiaRequerida);
 			respuesta.println("<div id=\"page-wrapper\">");
 			respuesta.println("");
 			respuesta.println("            <div class=\"container-fluid\">");
@@ -1367,8 +1367,8 @@ try {
 			respuesta.println("                    <form role=\"form\" action=\"ServletFiltrosTablas.htm\" method=\"get\">");
 			respuesta.println("");
 			respuesta.println("                            <div class=\"form-group\">");
-			respuesta.println("                                <label>Id Pedido</label>");
-			respuesta.println("                                <input class=\"form-control\" name=\"idPedidoProveedores\" placeholder=\"Ingrese pedido\">");
+			respuesta.println("                                <label>Material Requerido</label>");
+			respuesta.println("                                <input class=\"form-control\" name=\"materialRequerido\" placeholder=\"Ingrese material requerido\">");
 			respuesta.println("                            </div>");
 			respuesta.println("                            	   <button type=\"submit\" class=\"btn btn-primary\">Consultar</button>");
 			respuesta.println("                                <button type=\"reset\" class=\"btn btn-primary\">Reset</button>");

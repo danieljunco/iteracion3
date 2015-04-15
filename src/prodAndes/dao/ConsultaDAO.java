@@ -735,7 +735,7 @@ public class ConsultaDAO {
 			return pedidos;
 		}
 		
-		public ArrayList<ReqPedidoProveedor> consultarPedidosProveedorXIdPedido(String idPedido) throws Exception{
+		public ArrayList<ReqPedidoProveedor> consultarPedidosProveedorXMateriaRequerida(String nameMateria) throws Exception{
 			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
 			PreparedStatement prepStmt = null;
 			ArrayList<ReqPedidoProveedor> pedidos = new ArrayList<ReqPedidoProveedor>();
@@ -748,7 +748,7 @@ public class ConsultaDAO {
 						+ " cantidad as cant from contenido_pedido_mat join(select id_pedido as idped,"
 						+ " email_proveedor as email, fecha_pedido as fechaped, fecha_entrega as fechaent,"
 						+ " estado from pedidos_proveedores)on idPed=id_pedido)on id_comp=idcomp)on "
-						+ "id_mat=codigo where idped ='"+idPedido+"'");
+						+ "id_mat=codigo where nombre ='"+nameMateria+"'");
 				ResultSet rs = prepStmt.executeQuery();
 				
 				while (rs.next()) {

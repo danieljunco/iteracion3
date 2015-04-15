@@ -23,7 +23,7 @@ Departamento de Ingeniería de Sistemas y Computación
 		<!-- Definición de Propiedades -->
 		<property environment="env" />
 		
-		<property name="jboss.home" value="/Users/danieljunco/jboss-4.2.3.GA" />
+		<property name="jboss.home" value="/home/danieljunco/JBOSS/jboss-4.2.3.GA" />
 		<property name="server.path" value="server/default" />
 		<property name="source" value="./src" />
 		<property name="classes" value="./classes" />

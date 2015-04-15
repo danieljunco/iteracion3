@@ -88,7 +88,7 @@ public class ServletImprimirRFC5 extends ServletTemplate{
 		respuesta.println("                    <form role=\"form\" action=\"ServletFiltrosTablas.htm\" method=\"get\">");
 		respuesta.println("");
 		respuesta.println("                            <div class=\"form-group\">");
-		respuesta.println("                                <label>Fecha</label>");
+		respuesta.println("                                <label>Fecha Entrega</label>");
 		respuesta.println("                                <input type=\"date\" class=\"form-control\" name=\"fechaPedido\" >");
 		respuesta.println("                            <br>");
 		respuesta.println("                                <input type=\"date\" class=\"form-control\" name=\"fechaEntrega\" >");
@@ -209,8 +209,8 @@ public class ServletImprimirRFC5 extends ServletTemplate{
 		respuesta.println("                    <form role=\"form\" action=\"ServletFiltrosTablas.htm\" method=\"get\">");
 		respuesta.println("");
 		respuesta.println("                            <div class=\"form-group\">");
-		respuesta.println("                                <label>Id Pedido</label>");
-		respuesta.println("                                <input class=\"form-control\" name=\"idPedidoProveedores\" placeholder=\"Ingrese pedido\">");
+		respuesta.println("                                <label>Material Requerido</label>");
+		respuesta.println("                                <input class=\"form-control\" name=\"materialRequerido\" placeholder=\"Ingrese material requerido\">");
 		respuesta.println("                            </div>");
 		respuesta.println("                            	   <button type=\"submit\" class=\"btn btn-primary\">Consultar</button>");
 		respuesta.println("                                <button type=\"reset\" class=\"btn btn-primary\">Reset</button>");
