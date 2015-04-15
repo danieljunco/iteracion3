@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE web-app PUBLIC
+   "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+   "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+	<description>ServletsProdAndes</description>
+
+	<!-- SERVLETS -->
+
+	<servlet>
+		<servlet-name>ServletIndex</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletIndex</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletRF10</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletRF10</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletRF11</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletRF11</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletRF12</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletRF12</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletRF14</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletRF14</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletRFC1</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletRFC1</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletProductos</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletProductos</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletTablasProductos</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletTablasProductos</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletRF13</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletRF13</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletCancelarPedidos</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletCancelarPedidos</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletRFC5</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletRFC5</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletImprimirRFC5</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletImprimirRFC5</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletRFC6</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletRFC6</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletRFC7</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletRFC7</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletFiltrosTablas</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletFiltrosTablas</servlet-class>
+	</servlet>
+	
+	
+	<!-- MAPPING -->
+
+	<servlet-mapping>
+		<servlet-name>ServletIndex</servlet-name>
+		<url-pattern>/index.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletRF10</servlet-name>
+		<url-pattern>/RF10.htm</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet-mapping>
+		<servlet-name>ServletRF11</servlet-name>
+		<url-pattern>/RF11.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletRF12</servlet-name>
+		<url-pattern>/RF12.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletRF14</servlet-name>
+		<url-pattern>/RF14.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletRFC1</servlet-name>
+		<url-pattern>/RFC1.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletProductos</servlet-name>
+		<url-pattern>/ServletProductos.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletTablasProductos</servlet-name>
+		<url-pattern>/ServletTablasProductos.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletRF13</servlet-name>
+		<url-pattern>/RF13.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletCancelarPedidos</servlet-name>
+		<url-pattern>/Cancelar.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletRFC5</servlet-name>
+		<url-pattern>/RFC5.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletImprimirRFC5</servlet-name>
+		<url-pattern>/ImprimirRFC5.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletRFC6</servlet-name>
+		<url-pattern>/RFC6.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletRFC7</servlet-name>
+		<url-pattern>/RFC7.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletFiltrosTablas</servlet-name>
+		<url-pattern>/ServletFiltrosTablas.htm</url-pattern>
+	</servlet-mapping>
+	
+
+</web-app>
