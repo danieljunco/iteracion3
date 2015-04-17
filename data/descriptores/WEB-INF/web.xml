@@ -85,6 +85,10 @@
 		<servlet-class>prodAndes.servlets.ServletFiltrosTablas</servlet-class>
 	</servlet>
 	
+	<servlet>
+		<servlet-name>ServletRF17</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletRF17</servlet-class>
+	</servlet>
 	
 	<!-- MAPPING -->
 
@@ -162,6 +166,11 @@
 	<servlet-mapping>
 		<servlet-name>ServletFiltrosTablas</servlet-name>
 		<url-pattern>/ServletFiltrosTablas.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletRF17</servlet-name>
+		<url-pattern>/ServletRF17.htm</url-pattern>
 	</servlet-mapping>
 	
 

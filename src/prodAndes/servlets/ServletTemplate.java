@@ -178,7 +178,7 @@ public abstract class ServletTemplate extends HttpServlet{
 		respuesta.println("                        <a href=\"RF13.htm\"><i class=\"fa fa-fw fa-edit\"></i>Cancelar Pedidos</a>");
 		respuesta.println("                    </li>");
 		respuesta.println("                    <li>");
-		respuesta.println("                        <a href=\"RF14.html\"><i class=\"fa fa-fw fa-edit\"></i>Reportar Cambio de Estado</a>");
+		respuesta.println("                        <a href=\"RF17.htm\"><i class=\"fa fa-fw fa-edit\"></i>Reportar Cambio de Estado</a>");
 		respuesta.println("                    </li>");
 		respuesta.println("                </ul>");
 		respuesta.println("            </div>");

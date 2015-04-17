@@ -245,6 +245,27 @@ public class ServletIndex extends ServletTemplate{
 		respuesta.println("                            </a>");
 		respuesta.println("                        </div>");
 		respuesta.println("                    </div>");
+		respuesta.println("                    <div class=\"col-lg-12\">");
+		respuesta.println("                        <div class=\"panel panel-yellow\">");
+		respuesta.println("                            <div class=\"panel-heading\">");
+		respuesta.println("                                <div class=\"row\">");
+		respuesta.println("                                    <div class=\"col-xs-3\">");
+		respuesta.println("                                        <i class=\"fa fa-edit fa-5x\"></i>");
+		respuesta.println("                                    </div>");
+		respuesta.println("                                    <div class=\"col-xs-9 text-right\">");
+		respuesta.println("                                        <div class=\"huge\">RF17</div>");
+		respuesta.println("                                    </div>");
+		respuesta.println("                                </div>");
+		respuesta.println("                            </div>");
+		respuesta.println("                            <a href=\"RF17.htm\">");
+		respuesta.println("                                <div class=\"panel-footer\">");
+		respuesta.println("                                    <span class=\"pull-left\">Reportar cambio de estado de una estacion de produccion</span>");
+		respuesta.println("                                    <span class=\"pull-right\"><i class=\"fa fa-arrow-circle-right\"></i></span>");
+		respuesta.println("                                    <div class=\"clearfix\"></div>");
+		respuesta.println("                                </div>");
+		respuesta.println("                            </a>");
+		respuesta.println("                        </div>");
+		respuesta.println("                    </div>");
 		respuesta.println("                 </div>");
 
 

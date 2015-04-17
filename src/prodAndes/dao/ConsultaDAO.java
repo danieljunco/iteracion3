@@ -18,6 +18,7 @@ import prodAndes.vos.Componente;
 import prodAndes.vos.ConsultaComponente;
 import prodAndes.vos.ConsultaMateria;
 import prodAndes.vos.ConsultaProducto;
+import prodAndes.vos.EstacionProduccion;
 import prodAndes.vos.EtapaProduccion;
 import prodAndes.vos.MateriaPrima;
 import prodAndes.vos.PedidoCliente;
@@ -128,6 +129,49 @@ public class ConsultaDAO {
 				throw new Exception("ERROR: ConsultaDAO: closeConnection() = cerrando una conexion.");
 			}
 		} 
+		
+		public ArrayList<EstacionProduccion> darEstacionesDeProduccion() throws Exception{
+			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
+			PreparedStatement prepStmt = null;
+			ArrayList<EstacionProduccion> estaciones = new ArrayList<EstacionProduccion>();
+			EstacionProduccion estacion = new EstacionProduccion();
+			try {
+				prepStmt = conexion.prepareStatement("select codigo, capacidad, estado, ocupacion_actual from estaciones_produccion");
+				ResultSet rs = prepStmt.executeQuery();
+				
+				while (rs.next()) {
+					String id = rs.getString("CODIGO");
+					int capacidad = rs.getInt("CAPACIDAD");
+					String estado = rs.getString("ESTADO");
+					int ocupacionActual = rs.getInt("OCUPACION_ACTUAL");
+					
+					estacion.setCodigo(id);
+					estacion.setCapacidad(capacidad);
+					estacion.setEstado(estado);
+					estacion.setOcupacion_actual(ocupacionActual);
+					
+					estaciones.add(estacion);
+					
+					estacion = new EstacionProduccion();	
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally{
+				if (prepStmt!=null) {
+					try {
+						prepStmt.close();
+					} catch (SQLException e2) {
+						throw new Exception("ERROR: ConsultaDAO: loadRow() = cerrando conexion.");
+					}
+				}
+			}
+			closeConnection(conexion);
+			return estaciones;
+			
+		}
+		
+		//private void extraerEtapas(String idEstacion,  )
 		
 		public ArrayList<Cliente> consultarClienteFiltroIdPedido(String idPedido) throws Exception{
 			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
