@@ -170,7 +170,7 @@
 	
 	<servlet-mapping>
 		<servlet-name>ServletRF17</servlet-name>
-		<url-pattern>/ServletRF17.htm</url-pattern>
+		<url-pattern>/RF17.htm</url-pattern>
 	</servlet-mapping>
 	
 

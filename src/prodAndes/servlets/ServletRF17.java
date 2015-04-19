@@ -42,23 +42,45 @@ public class ServletRF17 extends ServletTemplate {
 			respuesta.println("                        </ol>");
 			respuesta.println("                    </div>");
 			respuesta.println("                </div>");
-			
-			respuesta.println("<ol class=\"breadcrumb\">");
-			respuesta.println("                        <h2>");
+			respuesta.println("                </div>");
+			respuesta.println("                <div class=\"row\">");
+			respuesta.println("                    <div class=\"col-lg-12\">");
+			respuesta.println("                        <h1 class=\"page-header\">");
 			respuesta.println("                            Estaciones de Produccion");
-			respuesta.println("                        </h2>");
-			respuesta.println("<div class=\"row\">");
-			respuesta.println("                    <div class=\"col-lg-4\">");
-			respuesta.println("                    <form role=\"form\" action=\"ServletFiltrosTablas.htm\" method=\"get\">");
-			respuesta.println("");
-			respuesta.println("                            <div class=\"form-group\">");
-			respuesta.println("                                <label>Email</label>");
-			respuesta.println("                                <input class=\"form-control\" name=\"emailCliente\" placeholder=\"Ingrese Email del cliente\">");
-			respuesta.println("                            </div>");
-			respuesta.println("                            	   <button type=\"submit\" class=\"btn btn-primary\">Consultar</button>");
-			respuesta.println("                                <button type=\"reset\" class=\"btn btn-primary\">Reset</button>");
-			respuesta.println("</form>");
-			respuesta.println("                            </div>");
+			respuesta.println("                        </h1>");
+			respuesta.println("                </div>");
+			respuesta.println("                </div>");
+			
+			for (int i = 0; i < estaciones.size(); i++) {
+				EstacionProduccion x = estaciones.get(i);
+				respuesta.println("                    <div class=\"col-lg-3\">");
+				respuesta.println("<ol class=\"breadcrumb\">");
+				respuesta.println("                    <form role=\"form\" action=\"ServletFiltrosTablas.htm\" method=\"get\">");
+				respuesta.println("");
+				respuesta.println("                            <div class=\"form-group\">");
+				respuesta.println("                                <label>Id</label>");
+				respuesta.println("                                <a name=\"codigo\">"+x.getCodigo()+"</a>");
+				respuesta.println("                                <br>");
+				respuesta.println("                                <label>Estado</label>");
+				respuesta.println("                                <a name=\"estado\">"+x.getEstado()+"</a>");
+				respuesta.println("                                <br>");
+				respuesta.println("                                <label>Capacidad</label>");
+				respuesta.println("                                <a name=\"capacidad\">"+x.getCapacidad()+"</a>");
+				respuesta.println("                                <br>");	
+				respuesta.println("                                <label>Ocupacion Actual</label>");
+				respuesta.println("                                <a name=\"ocupacion\">"+x.getOcupacion_actual()+"</a>");
+				respuesta.println("                            	   <button type=\"submit\" class=\"btn btn-primary\">Cambiar Estado</button>");
+				respuesta.println("                            </div>");
+				respuesta.println("</ol>");
+				respuesta.println("</form>");
+				respuesta.println("<br>");
+				respuesta.println("</div>");
+
+				
+			}
+			respuesta.println("                </div>");
+			
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
