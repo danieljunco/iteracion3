@@ -90,6 +90,26 @@
 		<servlet-class>prodAndes.servlets.ServletRF17</servlet-class>
 	</servlet>
 	
+	<servlet>
+		<servlet-name>ServletRFC11</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletRFC11</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletRFC10</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletRFC10</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletRFC9</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletRFC9</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletRFC8</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletRFC8</servlet-class>
+	</servlet>
+	
 	<!-- MAPPING -->
 
 	<servlet-mapping>
@@ -173,5 +193,24 @@
 		<url-pattern>/RF17.htm</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>ServletRFC11</servlet-name>
+		<url-pattern>/RFC11.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletRFC10</servlet-name>
+		<url-pattern>/RFC10.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletRFC9</servlet-name>
+		<url-pattern>/RFC9.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletRFC8</servlet-name>
+		<url-pattern>/RFC8.htm</url-pattern>
+	</servlet-mapping>
 
 </web-app>
