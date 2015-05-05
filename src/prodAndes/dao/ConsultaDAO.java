@@ -22,6 +22,7 @@ import prodAndes.vos.EstacionProduccion;
 import prodAndes.vos.EtapaProduccion;
 import prodAndes.vos.MateriaPrima;
 import prodAndes.vos.PedidoCliente;
+import prodAndes.vos.PedidoMaterial2;
 import prodAndes.vos.PedidoProveedor;
 import prodAndes.vos.Producto;
 import prodAndes.vos.ProductoCantidad;
@@ -172,6 +173,103 @@ public class ConsultaDAO {
 		}
 		
 		//private void extraerEtapas(String idEstacion,  )
+		
+		public ArrayList<String> consultarIdMaterial () throws Exception{
+			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
+			PreparedStatement prepStmt = null;
+			ArrayList<String> idsMaterial = new ArrayList<String>();
+			
+			try {
+				prepStmt = conexion.prepareStatement("select distinct id_mat, ped,"
+						+ " email_cliente, fecha_pedido, fecha_entrega, estado,"
+						+ " cant from (select id_mat, ped, email_cliente,"
+						+ " fecha_pedido, fecha_entrega, estado, cant,"
+						+ " id_comp as comp  from (select pedidos_clientes.id_pedido"
+						+ " as ped, email_cliente, fecha_pedido, fecha_entrega, estado,"
+						+ " id_comp as idcomp, cantidad from PEDIDOS_CLIENTES"
+						+ " join contenido_pedido_mat"
+						+ " on pedidos_clientes.id_pedido=contenido_pedido_mat.id_pedido)"
+						+ " join (select id_comp, id_mat, cantidad as cant from compuesto_de_comp)"
+						+ " on idcomp=id_comp order by ped) join (select codigo, id_producto, id_comp"
+						+ " from etapas_produccion where num_etapa between 1 and 9) on comp = id_comp" );
+				ResultSet rs = prepStmt.executeQuery();
+				while (rs.next()) {
+					String idMat = rs.getString("ID_MAT");
+					idsMaterial.add(idMat);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			finally{
+				if(prepStmt!=null){
+					try {
+						prepStmt.close();
+					} catch (SQLException e2) {
+						throw new Exception("ERROR: ConsultaDAO: loadRow() = cerrando conexion.");
+					}
+				}
+			}
+			closeConnection(conexion);
+			return idsMaterial;
+		}
+		
+		public ArrayList<PedidoMaterial2> consultarMaterial2(String identificacdorMaterial) throws Exception{
+			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
+			PreparedStatement prepStmt = null;
+			ArrayList<PedidoMaterial2> pedidosMaterial = new ArrayList<PedidoMaterial2>();
+			PedidoMaterial2 pedidoMaterial = new PedidoMaterial2();
+			
+			try {
+				prepStmt = conexion.prepareStatement("select distinct id_mat, ped,"
+						+ " email_cliente, fecha_pedido, fecha_entrega, estado, cant from"
+						+ " (select id_mat, ped, email_cliente, fecha_pedido,"
+						+ " fecha_entrega, estado, cant, id_comp as comp  from "
+						+ "(select pedidos_clientes.id_pedido as ped, email_cliente, "
+						+ "fecha_pedido, fecha_entrega, estado, id_comp as idcomp, "
+						+ "cantidad from PEDIDOS_CLIENTES join contenido_pedido_mat"
+						+ " on pedidos_clientes.id_pedido=contenido_pedido_mat.id_pedido)"
+						+ " join (select id_comp, id_mat, cantidad as cant"
+						+ " from compuesto_de_comp) on idcomp=id_comp order by ped)"
+						+ " join (select codigo, id_producto, id_comp"
+						+ " from etapas_produccion where num_etapa between 1 and 9)"
+						+ " on comp = id_comp where id_mat='"+identificacdorMaterial+"'" );
+				ResultSet rs = prepStmt.executeQuery();
+				while (rs.next()) {
+					String idMaterial = rs.getString("ID_MAT");
+					String idPedido = rs.getString("PED");
+					String emailCliente = rs.getString("EMAIL_CLIENTE");
+					Date fechaPedido = rs.getDate("FECHA_PEDIDO");
+					Date fechaEntrega = rs.getDate("FECHA_ENTREGA");
+					String estado = rs.getString("ESTADO");
+					int cantidad = rs.getInt("CANT");
+					
+					pedidoMaterial.setIdMaterial(idMaterial);
+					pedidoMaterial.setIdPedido(idPedido);
+					pedidoMaterial.setEmailCliente(emailCliente);
+					pedidoMaterial.setFechaPedido(fechaPedido);
+					pedidoMaterial.setFechaEntrega(fechaEntrega);
+					pedidoMaterial.setEstado(estado);
+					pedidoMaterial.setCantidad(cantidad);
+					
+					pedidosMaterial.add(pedidoMaterial);
+					pedidoMaterial = new PedidoMaterial2();
+					
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			finally{
+				if(prepStmt!=null){
+					try {
+						prepStmt.close();
+					} catch (SQLException e2) {
+						throw new Exception("ERROR: ConsultaDAO: loadRow() = cerrando conexion.");
+					}
+				}
+			}
+			closeConnection(conexion);
+			return pedidosMaterial;
+		}
 		
 		public ArrayList<Cliente> consultarClienteFiltroIdPedido(String idPedido) throws Exception{
 			establecerConexion(RUTA_DB, USER_DB, PASS_DB);

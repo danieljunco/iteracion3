@@ -22,7 +22,8 @@ public class ServletRFC11 extends ServletTemplate{
 	public void escribirContenido(HttpServletRequest request,HttpServletResponse response) throws IOException {
 		PrintWriter respuesta = response.getWriter();
 		try {
-			System.out.println("Entra loco");
+			
+			ArrayList<String> idsMaterial = ProdAndes.darInstancia().consultarIdMaterial();
 			respuesta.println("<div id=\"page-wrapper\">");
 			respuesta.println("");
 			respuesta.println("            <div class=\"container-fluid\">");
@@ -52,11 +53,17 @@ public class ServletRFC11 extends ServletTemplate{
 			respuesta.println("                    <div class=\"col-lg-4\">");
 			respuesta.println("                            </div>");
 			respuesta.println("                    <div class=\"col-lg-4\">");
-			respuesta.println("                    <form role=\"form\" action=\"ServletFiltrosTablas.htm\" method=\"get\">");
+			respuesta.println("                    <form role=\"form\" action=\"ServletIteracion4.htm\" method=\"get\">");
 			respuesta.println("");
 			respuesta.println("                            <div class=\"form-group\">");
 			respuesta.println("                                <label>Identificador Material</label>");
-			respuesta.println("                                <input class=\"form-control\" name=\"identificadorMaterial\" placeholder=\"Ingrese Identificador del Material\">");
+			respuesta.println("                            	<select class=\"form-control\" name=\"identificadorMaterial\" required>");
+			respuesta.println("                            	<option value=\"\" disabled selected> Sel. Producto </option>");
+			for (int i = 0; i < idsMaterial.size(); i++) {
+				String nombre = idsMaterial.get(i);
+				respuesta.println("                            	<option value=\""+nombre+"\">"+nombre+"</option>");
+			}
+			respuesta.println("                            	</select>");	
 			respuesta.println("                            </div>");
 			respuesta.println("                            	   <button type=\"submit\" class=\"btn btn-primary\">Consultar</button>");
 			respuesta.println("                                <button type=\"reset\" class=\"btn btn-primary\">Reset</button>");

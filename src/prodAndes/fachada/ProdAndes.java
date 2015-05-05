@@ -12,6 +12,7 @@ import prodAndes.vos.ConsultaProducto;
 import prodAndes.vos.EstacionProduccion;
 import prodAndes.vos.MateriaPrima;
 import prodAndes.vos.PedidoCliente;
+import prodAndes.vos.PedidoMaterial2;
 import prodAndes.vos.Producto;
 import prodAndes.vos.ProductoCantidad;
 import prodAndes.vos.Proveedor;
@@ -173,5 +174,11 @@ public class ProdAndes {
 	}
 	public ArrayList<EstacionProduccion> darEstacionesProduccion() throws Exception{
 		return dao.darEstacionesDeProduccion();
+	}
+	public ArrayList<PedidoMaterial2> consultarMaterial2(String idMaterial) throws Exception{
+		return dao.consultarMaterial2(idMaterial);
+	}
+	public ArrayList<String> consultarIdMaterial() throws Exception{
+		return dao.consultarIdMaterial();
 	}
 }
