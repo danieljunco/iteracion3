@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import prodAndes.fachada.ProdAndes;
 import prodAndes.vos.PedidoMaterial2;
+import prodAndes.vos.Pedidos2;
 import prodAndes.vos.ReqPedidoProveedor;
 
 public class ServletIteracion4 extends ServletTemplate{
@@ -23,9 +24,21 @@ public class ServletIteracion4 extends ServletTemplate{
 			HttpServletResponse response) throws IOException {
 		PrintWriter respuesta = response.getWriter();
 		String identificadorMaterial = request.getParameter("identificadorMaterial");
+		String typeMaterial = request.getParameter("typeMaterial");
+		String costo = request.getParameter("costo");
+		int costoT = Integer.parseInt(costo);
 		if(identificadorMaterial != null){
 			try{
 				imprimirTablasClientes(respuesta, identificadorMaterial);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				imprimirError(response, "Error en clientes");
+			}
+		}
+		else if(costoT!=0 && typeMaterial!=null){
+			try{
+				imprimirTablasPedidos(respuesta, typeMaterial, costoT);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -106,6 +119,86 @@ public class ServletIteracion4 extends ServletTemplate{
 			respuesta.println("                                        <td>"+x.getFechaEntrega()+"</td>");
 			respuesta.println("                                        <td>"+x.getEstado()+"</td>");
 			respuesta.println("                                        <td>"+x.getCantidad()+"</td>");
+			respuesta.println("                                </tr>");
+
+		}
+		
+		respuesta.println("                                </tbody>");
+		respuesta.println("                            </table>");
+		respuesta.println("                         </div>");
+		respuesta.println("                      </div>");
+		respuesta.println("                 </div>");
+	}
+	
+	private void imprimirTablasPedidos(PrintWriter respuesta, String material, int costo) throws Exception{
+		ArrayList<Pedidos2> pedidos = ProdAndes.darInstancia().consultarPedidos2(material, costo);
+		respuesta.println("<div id=\"page-wrapper\">");
+		respuesta.println("");
+		respuesta.println("            <div class=\"container-fluid\">");
+		respuesta.println("");
+		respuesta.println("                <!-- Page Heading -->");
+		respuesta.println("                <div class=\"row\">");
+		respuesta.println("                    <div class=\"col-lg-12\">");
+		respuesta.println("                        <h1 class=\"page-header\">");
+		respuesta.println("                            RFC10 - Consultar Pedidos 2");
+		respuesta.println("                        </h1>");
+		respuesta.println("                        <ol class=\"breadcrumb\">");
+		respuesta.println("                            <li>");
+		respuesta.println("                                <i class=\"fa fa-dashboard\"></i>  <a href=\"index.htm\">Dashboard</a>");
+		respuesta.println("                            </li>");
+		respuesta.println("                            <li class=\"active\">");
+		respuesta.println("                                <i class=\"fa fa-table\"></i> RFC10");
+		respuesta.println("                            </li>");
+		respuesta.println("                        </ol>");
+		respuesta.println("                    </div>");
+		respuesta.println("                </div>");
+		
+		respuesta.println("<ol class=\"breadcrumb\">");
+		respuesta.println("                        <h2>");
+		respuesta.println("                            Consulta");
+		respuesta.println("                        </h2>");
+		respuesta.println("<div class=\"row\">");
+		respuesta.println("                    <div class=\"col-lg-6\">");
+		respuesta.println("                    <form role=\"form\" action=\"ServletIteracion4.htm\" method=\"get\">");
+		respuesta.println("");
+		respuesta.println("                            <div class=\"form-group\">");
+		respuesta.println("                                <label>Tipo de Material</label>");
+		respuesta.println("                                <input class=\"form-control\" name=\"typeMaterial\" placeholder=\"Ingrese Tipo Material\">");
+		respuesta.println("                                <label>Costo</label>");
+		respuesta.println("                                <input class=\"form-control\" name=\"costo\" placeholder=\"Ingrese costo\">");
+		respuesta.println("                            </div>");
+		respuesta.println("                            	   <button type=\"submit\" class=\"btn btn-primary\">Consultar</button>");
+		respuesta.println("                                <button type=\"reset\" class=\"btn btn-primary\">Reset</button>");
+		respuesta.println("</form>");
+		respuesta.println("                            </div>");
+		respuesta.println("                            </div>");
+		respuesta.println("                        </ol>");
+		respuesta.println("<div class=\"row\">");
+		respuesta.println("                    <div class=\"col-lg-12\">");
+		respuesta.println("                        <h2>Tabla Pedidos 2</h2>");
+		respuesta.println("                        <div class=\"table-responsive\">");
+		respuesta.println("                            <table class=\"table table-bordered table-hover\">");
+		respuesta.println("                                <thead>");
+		respuesta.println("                                    <tr>");
+		respuesta.println("                                        <th>Id Pedido</th>");
+		respuesta.println("                                        <th>Id Producto</th>");
+		respuesta.println("                                        <th>Id Material</th>");
+		respuesta.println("                                        <th>Tipo Material</th>");
+		respuesta.println("                                        <th>Cantidad</th>");
+		respuesta.println("                                        <th>Costo</th>");
+		respuesta.println("                                    </tr>");
+		respuesta.println("                                </thead>");
+		respuesta.println("                                <tbody>");
+		for (int i = 0; i < pedidos.size(); i++) 
+		{
+			Pedidos2 x = pedidos.get(i);
+			respuesta.println("                                <tr>");
+			respuesta.println("                                        <td>"+x.getIdPedido()+"</td>");
+			respuesta.println("                                        <td>"+x.getIdProducto()+"</td>");
+			respuesta.println("                                        <td>"+x.getIdMaterial()+"</td>");
+			respuesta.println("                                        <td>"+x.getNombre()+"</td>");
+			respuesta.println("                                        <td>"+x.getCantidad()+"</td>");
+			respuesta.println("                                        <td>"+x.getCosto()+"</td>");
 			respuesta.println("                                </tr>");
 
 		}

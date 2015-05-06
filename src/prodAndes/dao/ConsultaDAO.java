@@ -24,6 +24,7 @@ import prodAndes.vos.MateriaPrima;
 import prodAndes.vos.PedidoCliente;
 import prodAndes.vos.PedidoMaterial2;
 import prodAndes.vos.PedidoProveedor;
+import prodAndes.vos.Pedidos2;
 import prodAndes.vos.Producto;
 import prodAndes.vos.ProductoCantidad;
 import prodAndes.vos.Proveedor;
@@ -130,6 +131,109 @@ public class ConsultaDAO {
 				throw new Exception("ERROR: ConsultaDAO: closeConnection() = cerrando una conexion.");
 			}
 		} 
+		
+		public ArrayList<String> consultarNombreMaterialPedidos2() throws Exception{
+			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
+			PreparedStatement prepStmt = null;
+			ArrayList<String> nombres = new ArrayList<String>();
+			try {
+				prepStmt = conexion.prepareStatement("select distinct id_pedido,"
+						+ " id_producto, id_mat, nombre, cant, costo_unitario"
+						+ " from materias_primas join (select distinct id_pedido,"
+						+ " cant, id_producto, id_mat, costo_unitario "
+						+ " from productos join (select distinct  id_pedido,"
+						+ " idComponente, cant, id_producto, id_mat from"
+						+ " CONTENIDO_PEDIDO_MAT join (select id_producto,"
+						+ " COMPUESTO_DE_PROD.ID_COMPONENTE as idComponente, "
+						+ "COMPUESTO_DE_COMP.CANTIDAD as cant, id_mat from"
+						+ " COMPUESTO_DE_PROD join COMPUESTO_DE_COMP on "
+						+ "COMPUESTO_DE_COMP.ID_COMP=COMPUESTO_DE_PROD.ID_COMPONENTE)"
+						+ " on contenido_pedido_mat.id_comp=idComponente "
+						+ "order by id_pedido) on codigo=id_producto) on codigo=id_mat" );
+				ResultSet rs = prepStmt.executeQuery();
+				while (rs.next()) {
+					String nombre = rs.getString("ID_MAT");
+					nombres.add(nombre);
+					}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			finally{
+				if(prepStmt!=null){
+					try {
+						prepStmt.close();
+					} catch (SQLException e2) {
+						throw new Exception("ERROR: ConsultaDAO: loadRow() = cerrando conexion.");
+					}
+				}
+			}
+			closeConnection(conexion);
+			return nombres;
+		}
+		
+		public ArrayList<Pedidos2> consultarPedidos2(String tipoMaterial, int costo ) throws Exception{
+			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
+			PreparedStatement prepStmt = null;
+			ArrayList<Pedidos2> pedidos = new ArrayList<Pedidos2>();
+			Pedidos2 pedido = new Pedidos2();
+			
+			try {
+				prepStmt = conexion.prepareStatement("select distinct id_pedido,"
+						+ " id_producto, id_mat, nombre, cant, costo_unitario"
+						+ " from materias_primas join (select distinct id_pedido,"
+						+ " cant, id_producto, id_mat, costo_unitario "
+						+ " from productos join (select distinct  id_pedido,"
+						+ " idComponente, cant, id_producto, id_mat from"
+						+ " CONTENIDO_PEDIDO_MAT join (select id_producto,"
+						+ " COMPUESTO_DE_PROD.ID_COMPONENTE as idComponente, "
+						+ "COMPUESTO_DE_COMP.CANTIDAD as cant, id_mat from"
+						+ " COMPUESTO_DE_PROD join COMPUESTO_DE_COMP on "
+						+ "COMPUESTO_DE_COMP.ID_COMP=COMPUESTO_DE_PROD.ID_COMPONENTE)"
+						+ " on contenido_pedido_mat.id_comp=idComponente "
+						+ "order by id_pedido) on codigo=id_producto) on codigo=id_mat where nombre='"+tipoMaterial+"'" );
+				ResultSet rs = prepStmt.executeQuery();
+				while (rs.next()) {
+					String idPedido = rs.getString("ID_PEDIDO");
+					String idProducto = rs.getString("ID_PRODUCTO");
+					String idMaterial = rs.getString("ID_MAT");
+					String nombre = rs.getString("NOMBRE");
+					int cantidad = rs.getInt("CANT");
+					int costoUnitario = rs.getInt("COSTO_UNITARIO");
+					
+					int costoTotal = costoUnitario * cantidad;
+					
+					if( costoTotal >= costo){
+					
+					pedido.setIdPedido(idPedido);
+					pedido.setIdProducto(idProducto);
+					pedido.setIdMaterial(idMaterial);
+					pedido.setNombre(nombre);
+					pedido.setCantidad(cantidad);
+					pedido.setCosto(costoTotal);
+					
+					pedidos.add(pedido);
+					pedido = new Pedidos2();
+					costoTotal = 0;
+					}
+					
+					
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			finally{
+				if(prepStmt!=null){
+					try {
+						prepStmt.close();
+					} catch (SQLException e2) {
+						throw new Exception("ERROR: ConsultaDAO: loadRow() = cerrando conexion.");
+					}
+				}
+			}
+			closeConnection(conexion);
+			return pedidos;
+		}
 		
 		public ArrayList<EstacionProduccion> darEstacionesDeProduccion() throws Exception{
 			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
