@@ -7,6 +7,7 @@ import java.util.Date;
 import prodAndes.dao.ConsultaDAO;
 import prodAndes.vos.Cliente;
 import prodAndes.vos.ConsultaComponente;
+import prodAndes.vos.ConsultaEtapaProduccion;
 import prodAndes.vos.ConsultaMateria;
 import prodAndes.vos.ConsultaProducto;
 import prodAndes.vos.EstacionProduccion;
@@ -187,5 +188,14 @@ public class ProdAndes {
 	}
 	public ArrayList<String> consultarNombrePedidos2() throws Exception{
 		return dao.consultarNombreMaterialPedidos2();
+	}
+	public ArrayList<ConsultaEtapaProduccion> consultaEtapasProduccion(String fechaInicio, String fechaFin) throws Exception{
+		return dao.consultaEtapaProdccion2(fechaInicio, fechaFin);
+	}
+	public ArrayList<String> consultarMaterialEtapasProduccion(String fechaInicio, String fechaFin) throws Exception{
+		return dao.consultaEtapaProdccion2Material(fechaInicio, fechaFin);
+	}
+	public ArrayList<ConsultaEtapaProduccion> consultarEtapasProduccion1(String fechaInicio, String fechaFin, String idMaterial) throws Exception{
+		return dao.consultaEtapaProdccion1ConFiltro(fechaInicio, fechaFin, idMaterial);
 	}
 }

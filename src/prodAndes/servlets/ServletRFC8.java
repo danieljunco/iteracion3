@@ -2,9 +2,13 @@ package prodAndes.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import prodAndes.fachada.ProdAndes;
+import prodAndes.vos.ConsultaEtapaProduccion;
 
 
 public class ServletRFC8 extends ServletTemplate{
@@ -44,28 +48,21 @@ public class ServletRFC8 extends ServletTemplate{
 			respuesta.println("                            Rango de Tiempo");
 			respuesta.println("                        </h2>");
 			respuesta.println("<div class=\"row\">");
-			respuesta.println("                    <div class=\"col-lg-6\">");
-			respuesta.println("                    <form role=\"form\" action=\"ServletFiltrosTablas.htm\" method=\"get\">");
+			respuesta.println("                    <div class=\"col-lg-12\">");
+			respuesta.println("                    <form role=\"form\" action=\"ServletIteracion4.htm\" method=\"get\">");
 			respuesta.println("");
 			respuesta.println("                            <div class=\"form-group\">");
-			respuesta.println("                                <label>Rango</label>");
-			respuesta.println("                                <input type=\"date\" class=\"form-control\" name=\"rangoRFC8\" placeholder=\"Ingrese Rango\">");
+			respuesta.println("                                <label>Rango 1</label>");
+			respuesta.println("                                <input type=\"date\" class=\"form-control\" name=\"rangoRFC81\" placeholder=\"Ingrese Rango 1\">");
+			respuesta.println("                                <label>Rango 2</label>");
+			respuesta.println("                                <input type=\"date\" class=\"form-control\" name=\"rangoRFC82\" placeholder=\"Ingrese Rango 2\">");
 			respuesta.println("                            </div>");
 			respuesta.println("                            	   <button type=\"submit\" class=\"btn btn-primary\">Consultar</button>");
 			respuesta.println("                                <button type=\"reset\" class=\"btn btn-primary\">Reset</button>");
 			respuesta.println("</form>");
 			respuesta.println("                            </div>");
-			respuesta.println("                    <div class=\"col-lg-6\">");
-			respuesta.println("                    <form role=\"form\" action=\"ServletFiltrosTablas.htm\" method=\"get\">");
-			respuesta.println("");
-			respuesta.println("                            <div class=\"form-group\">");
-			respuesta.println("                                <label>Rango</label>");
-			respuesta.println("                                <input type=\"date\" class=\"form-control\" name=\"rangoRFC82\" placeholder=\"Ingrese Rango\">");
 			respuesta.println("                            </div>");
-			respuesta.println("                            	   <button type=\"submit\" class=\"btn btn-primary\">Consultar</button>");
-			respuesta.println("                                <button type=\"reset\" class=\"btn btn-primary\">Reset</button>");
-			respuesta.println("</form>");
-			respuesta.println("                            </div>");
+			respuesta.println("                            <br>");
 			respuesta.println("                            </div>");
 			respuesta.println("                        </ol>");
 			

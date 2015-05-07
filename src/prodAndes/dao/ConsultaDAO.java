@@ -16,6 +16,7 @@ import java.util.Properties;
 import prodAndes.vos.Cliente;
 import prodAndes.vos.Componente;
 import prodAndes.vos.ConsultaComponente;
+import prodAndes.vos.ConsultaEtapaProduccion;
 import prodAndes.vos.ConsultaMateria;
 import prodAndes.vos.ConsultaProducto;
 import prodAndes.vos.EstacionProduccion;
@@ -130,7 +131,255 @@ public class ConsultaDAO {
 			} catch (SQLException exception) {
 				throw new Exception("ERROR: ConsultaDAO: closeConnection() = cerrando una conexion.");
 			}
-		} 
+		}
+		
+		public ArrayList<ConsultaEtapaProduccion> consultaEtapaProdccion1ConFiltro(String fechaInicio, String fechaFin, String idMaterial) throws Exception {
+			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
+			PreparedStatement prepStmt = null;
+			ArrayList<ConsultaEtapaProduccion> etapas = new ArrayList<ConsultaEtapaProduccion>();
+			ConsultaEtapaProduccion etapa = new ConsultaEtapaProduccion();
+			try {
+				SimpleDateFormat df = new SimpleDateFormat("yy-MM-dd");
+				
+				Calendar c1 = Calendar.getInstance();
+				c1.setTime(df.parse(fechaInicio));
+				
+				String month1 = "";
+				
+				if ((c1.get(Calendar.MONTH)+1) < 10 )
+					month1 = "0"+(c1.get(Calendar.MONTH)+1);
+				else 
+					month1 = ""+(c1.get(Calendar.MONTH)+1);
+				
+				Calendar c2 = Calendar.getInstance();
+				c2.setTime(df.parse(fechaFin));
+				
+				String month2 = "";
+				
+				if ((c2.get(Calendar.MONTH)+1) < 10 )
+					month2 = "0"+(c2.get(Calendar.MONTH)+1);
+				else 
+					month2 = ""+(c2.get(Calendar.MONTH)+1);
+				
+				prepStmt = conexion.prepareStatement("select codigo as idetapa,"
+						+ " prod idproducto, id_pedido, id_mat, num_etapa, cant,"
+						+ " fecha_inicio, fecha_fin from contenido_pedido "
+						+ "join (select codigo, prod, num_etapa, cant,"
+						+ " fecha_inicio, fecha_fin, id_mat "
+						+ " from compuesto_de_comp join"
+						+ " (select codigo, prod, num_etapa,"
+						+ " cant, fecha_inicio, fecha_fin, id_componente"
+						+ " from compuesto_de_prod join"
+						+ " (select codigo, id_producto as prod, num_etapa,"
+						+ " cantidad as cant, fecha_inicio, fecha_fin from "
+						+ " ejecucion_etapa join (select codigo, id_producto, "
+						+ " num_etapa, cantidad from etapas_produccion "
+						+ " order by codigo) on id_etapa=codigo) "
+						+ " on compuesto_de_prod.id_producto=prod) "
+						+ " on id_comp=id_componente) "
+						+ " on prod=contenido_pedido.id_producto where fecha_inicio >= TO_DATE('" + c1.get(Calendar.DAY_OF_MONTH) + "/" + month1 + "/" + c1.get(Calendar.YEAR) +"', 'DD-MM-YY') AND fecha_fin <= TO_DATE('" + c2.get(Calendar.DAY_OF_MONTH) + "/" + month2 + "/" + c2.get(Calendar.YEAR) +"', 'DD-MM-YY') "
+								+ "where id_mat = '"+idMaterial+"' ");
+				ResultSet rs = prepStmt.executeQuery();
+				
+				while (rs.next()) {
+					
+					String idEtapa = rs.getString("IDETAPA");
+					String idProducto = rs.getString("IDPRODUCTO");
+					String idPedido = rs.getString("ID_PEDIDO");
+					String idMaterial1 = rs.getString("ID_MAT");
+					int numEtapa = rs.getInt("NUM_ETAPA");
+					int cantidad = rs.getInt("CANT");
+					Date fechaInicio2 = rs.getDate("FECHA_INICIO");
+					Date fechaFin2 = rs.getDate("FECHA_FIN");
+					
+					etapa.setIdEtapa(idEtapa);
+					etapa.setIdProducto(idProducto);
+					etapa.setIdPedido(idPedido);
+					etapa.setIdMaterial(idMaterial1);
+					etapa.setNumEtapa(numEtapa);
+					etapa.setCantidad(cantidad);
+					etapa.setFechaInicio(fechaInicio2);
+					etapa.setFechaFin(fechaFin2);
+					
+					etapas.add(etapa);
+					
+					etapa = new ConsultaEtapaProduccion();
+					
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally{
+				if (prepStmt!=null) {
+					try {
+						prepStmt.close();
+					} catch (SQLException e2) {
+						throw new Exception("ERROR: ConsultaDAO: loadRow() = cerrando conexion.");
+					}
+				}
+			}
+			closeConnection(conexion);
+			return etapas;
+		}
+		
+		public ArrayList<String> consultaEtapaProdccion2Material(String fechaInicio, String fechaFin) throws Exception {
+			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
+			PreparedStatement prepStmt = null;
+			ArrayList<String> etapas = new ArrayList<String>();
+			try {
+				SimpleDateFormat df = new SimpleDateFormat("yy-MM-dd");
+				
+				Calendar c1 = Calendar.getInstance();
+				c1.setTime(df.parse(fechaInicio));
+				
+				String month1 = "";
+				
+				if ((c1.get(Calendar.MONTH)+1) < 10 )
+					month1 = "0"+(c1.get(Calendar.MONTH)+1);
+				else 
+					month1 = ""+(c1.get(Calendar.MONTH)+1);
+				
+				Calendar c2 = Calendar.getInstance();
+				c2.setTime(df.parse(fechaFin));
+				
+				String month2 = "";
+				
+				if ((c2.get(Calendar.MONTH)+1) < 10 )
+					month2 = "0"+(c2.get(Calendar.MONTH)+1);
+				else 
+					month2 = ""+(c2.get(Calendar.MONTH)+1);
+				
+				prepStmt = conexion.prepareStatement("select codigo as idetapa,"
+						+ " prod idproducto, id_pedido, id_mat, num_etapa, cant,"
+						+ " fecha_inicio, fecha_fin from contenido_pedido "
+						+ "join (select codigo, prod, num_etapa, cant,"
+						+ " fecha_inicio, fecha_fin, id_mat "
+						+ " from compuesto_de_comp join"
+						+ " (select codigo, prod, num_etapa,"
+						+ " cant, fecha_inicio, fecha_fin, id_componente"
+						+ " from compuesto_de_prod join"
+						+ " (select codigo, id_producto as prod, num_etapa,"
+						+ " cantidad as cant, fecha_inicio, fecha_fin from "
+						+ " ejecucion_etapa join (select codigo, id_producto, "
+						+ " num_etapa, cantidad from etapas_produccion "
+						+ " order by codigo) on id_etapa=codigo) "
+						+ " on compuesto_de_prod.id_producto=prod) "
+						+ " on id_comp=id_componente) "
+						+ " on prod=contenido_pedido.id_producto where fecha_inicio >= TO_DATE('" + c1.get(Calendar.DAY_OF_MONTH) + "/" + month1 + "/" + c1.get(Calendar.YEAR) +"', 'DD-MM-YY') AND fecha_fin <= TO_DATE('" + c2.get(Calendar.DAY_OF_MONTH) + "/" + month2 + "/" + c2.get(Calendar.YEAR) +"', 'DD-MM-YY')  ");
+				ResultSet rs = prepStmt.executeQuery();
+				
+				while (rs.next()) {
+					
+					String idMaterial = rs.getString("ID_MAT");
+					
+					
+					etapas.add(idMaterial);
+					
+					
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally{
+				if (prepStmt!=null) {
+					try {
+						prepStmt.close();
+					} catch (SQLException e2) {
+						throw new Exception("ERROR: ConsultaDAO: loadRow() = cerrando conexion.");
+					}
+				}
+			}
+			closeConnection(conexion);
+			return etapas;
+		}
+		
+		public ArrayList<ConsultaEtapaProduccion> consultaEtapaProdccion2(String fechaInicio, String fechaFin) throws Exception {
+			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
+			PreparedStatement prepStmt = null;
+			ArrayList<ConsultaEtapaProduccion> etapas = new ArrayList<ConsultaEtapaProduccion>();
+			ConsultaEtapaProduccion etapa = new ConsultaEtapaProduccion();
+			try {
+				SimpleDateFormat df = new SimpleDateFormat("yy-MM-dd");
+				
+				Calendar c1 = Calendar.getInstance();
+				c1.setTime(df.parse(fechaInicio));
+				
+				String month1 = "";
+				
+				if ((c1.get(Calendar.MONTH)+1) < 10 )
+					month1 = "0"+(c1.get(Calendar.MONTH)+1);
+				else 
+					month1 = ""+(c1.get(Calendar.MONTH)+1);
+				
+				Calendar c2 = Calendar.getInstance();
+				c2.setTime(df.parse(fechaFin));
+				
+				String month2 = "";
+				
+				if ((c2.get(Calendar.MONTH)+1) < 10 )
+					month2 = "0"+(c2.get(Calendar.MONTH)+1);
+				else 
+					month2 = ""+(c2.get(Calendar.MONTH)+1);
+				
+				prepStmt = conexion.prepareStatement("select codigo as idetapa,"
+						+ " prod idproducto, id_pedido, id_mat, num_etapa, cant,"
+						+ " fecha_inicio, fecha_fin from contenido_pedido "
+						+ "join (select codigo, prod, num_etapa, cant,"
+						+ " fecha_inicio, fecha_fin, id_mat "
+						+ " from compuesto_de_comp join"
+						+ " (select codigo, prod, num_etapa,"
+						+ " cant, fecha_inicio, fecha_fin, id_componente"
+						+ " from compuesto_de_prod join"
+						+ " (select codigo, id_producto as prod, num_etapa,"
+						+ " cantidad as cant, fecha_inicio, fecha_fin from "
+						+ " ejecucion_etapa join (select codigo, id_producto, "
+						+ " num_etapa, cantidad from etapas_produccion "
+						+ " order by codigo) on id_etapa=codigo) "
+						+ " on compuesto_de_prod.id_producto=prod) "
+						+ " on id_comp=id_componente) "
+						+ " on prod=contenido_pedido.id_producto where fecha_inicio >= TO_DATE('" + c1.get(Calendar.DAY_OF_MONTH) + "/" + month1 + "/" + c1.get(Calendar.YEAR) +"', 'DD-MM-YY') AND fecha_fin <= TO_DATE('" + c2.get(Calendar.DAY_OF_MONTH) + "/" + month2 + "/" + c2.get(Calendar.YEAR) +"', 'DD-MM-YY')  ");
+				ResultSet rs = prepStmt.executeQuery();
+				
+				while (rs.next()) {
+					
+					String idEtapa = rs.getString("IDETAPA");
+					String idProducto = rs.getString("IDPRODUCTO");
+					String idPedido = rs.getString("ID_PEDIDO");
+					String idMaterial = rs.getString("ID_MAT");
+					int numEtapa = rs.getInt("NUM_ETAPA");
+					int cantidad = rs.getInt("CANT");
+					Date fechaInicio2 = rs.getDate("FECHA_INICIO");
+					Date fechaFin2 = rs.getDate("FECHA_FIN");
+					
+					etapa.setIdEtapa(idEtapa);
+					etapa.setIdProducto(idProducto);
+					etapa.setIdPedido(idPedido);
+					etapa.setIdMaterial(idMaterial);
+					etapa.setNumEtapa(numEtapa);
+					etapa.setCantidad(cantidad);
+					etapa.setFechaInicio(fechaInicio2);
+					etapa.setFechaFin(fechaFin2);
+					
+					etapas.add(etapa);
+					
+					etapa = new ConsultaEtapaProduccion();
+					
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally{
+				if (prepStmt!=null) {
+					try {
+						prepStmt.close();
+					} catch (SQLException e2) {
+						throw new Exception("ERROR: ConsultaDAO: loadRow() = cerrando conexion.");
+					}
+				}
+			}
+			closeConnection(conexion);
+			return etapas;
+		}
 		
 		public ArrayList<String> consultarNombreMaterialPedidos2() throws Exception{
 			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
