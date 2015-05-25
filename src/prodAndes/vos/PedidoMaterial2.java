@@ -4,6 +4,10 @@ import java.util.Date;
 
 public class PedidoMaterial2 {
 
+	private String codEtapa;
+	
+	private String idProducto;
+	
 	private String idMaterial;
 	
 	private String idPedido;
@@ -17,6 +21,8 @@ public class PedidoMaterial2 {
 	private String estado;
 	
 	private int cantidad;
+	
+	private String idComponente;
 
 	/**
 	 * @return the idMaterial
@@ -114,6 +120,48 @@ public class PedidoMaterial2 {
 	 */
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
+	}
+
+	/**
+	 * @return the codEtapa
+	 */
+	public String getCodEtapa() {
+		return codEtapa;
+	}
+
+	/**
+	 * @param codEtapa the codEtapa to set
+	 */
+	public void setCodEtapa(String codEtapa) {
+		this.codEtapa = codEtapa;
+	}
+
+	/**
+	 * @return the idProducto
+	 */
+	public String getIdProducto() {
+		return idProducto;
+	}
+
+	/**
+	 * @param idProducto the idProducto to set
+	 */
+	public void setIdProducto(String idProducto) {
+		this.idProducto = idProducto;
+	}
+
+	/**
+	 * @return the idComponente
+	 */
+	public String getIdComponente() {
+		return idComponente;
+	}
+
+	/**
+	 * @param idComponente the idComponente to set
+	 */
+	public void setIdComponente(String idComponente) {
+		this.idComponente = idComponente;
 	}
 	
 	

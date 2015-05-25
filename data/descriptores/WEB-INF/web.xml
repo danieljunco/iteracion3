@@ -114,6 +114,11 @@
 		<servlet-name>ServletIteracion4</servlet-name>
 		<servlet-class>prodAndes.servlets.ServletIteracion4</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletFinalRFC8</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletFinalRFC8</servlet-class>
+	</servlet>
 	<!-- MAPPING -->
 
 	<servlet-mapping>
@@ -220,6 +225,13 @@
 	<servlet-mapping>
 		<servlet-name>ServletIteracion4</servlet-name>
 		<url-pattern>/ServletIteracion4.htm</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+	<servlet-mapping>
+		<servlet-name>ServletFinalRFC8</servlet-name>
+		<url-pattern>/FRFC8.htm</url-pattern>
 	</servlet-mapping>
 
 </web-app>

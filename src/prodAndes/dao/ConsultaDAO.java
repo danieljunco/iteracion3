@@ -133,7 +133,9 @@ public class ConsultaDAO {
 			}
 		}
 		
-		public ArrayList<ConsultaEtapaProduccion> consultaEtapaProdccion1ConFiltro(String fechaInicio, String fechaFin, String idMaterial) throws Exception {
+
+		
+		public ArrayList<ConsultaEtapaProduccion> consultaEtapaProdccion1ConFiltro(String fechaInicio, String fechaFin, String iFiltro, String filtro) throws Exception {
 			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
 			PreparedStatement prepStmt = null;
 			ArrayList<ConsultaEtapaProduccion> etapas = new ArrayList<ConsultaEtapaProduccion>();
@@ -161,49 +163,159 @@ public class ConsultaDAO {
 				else 
 					month2 = ""+(c2.get(Calendar.MONTH)+1);
 				
-				prepStmt = conexion.prepareStatement("select codigo as idetapa,"
-						+ " prod idproducto, id_pedido, id_mat, num_etapa, cant,"
-						+ " fecha_inicio, fecha_fin from contenido_pedido "
-						+ "join (select codigo, prod, num_etapa, cant,"
-						+ " fecha_inicio, fecha_fin, id_mat "
-						+ " from compuesto_de_comp join"
-						+ " (select codigo, prod, num_etapa,"
-						+ " cant, fecha_inicio, fecha_fin, id_componente"
-						+ " from compuesto_de_prod join"
-						+ " (select codigo, id_producto as prod, num_etapa,"
-						+ " cantidad as cant, fecha_inicio, fecha_fin from "
-						+ " ejecucion_etapa join (select codigo, id_producto, "
-						+ " num_etapa, cantidad from etapas_produccion "
-						+ " order by codigo) on id_etapa=codigo) "
-						+ " on compuesto_de_prod.id_producto=prod) "
-						+ " on id_comp=id_componente) "
-						+ " on prod=contenido_pedido.id_producto where fecha_inicio >= TO_DATE('" + c1.get(Calendar.DAY_OF_MONTH) + "/" + month1 + "/" + c1.get(Calendar.YEAR) +"', 'DD-MM-YY') AND fecha_fin <= TO_DATE('" + c2.get(Calendar.DAY_OF_MONTH) + "/" + month2 + "/" + c2.get(Calendar.YEAR) +"', 'DD-MM-YY') "
-								+ "where id_mat = '"+idMaterial+"' ");
+				if(iFiltro==null && filtro ==null){
+					prepStmt = conexion.prepareStatement("select id_pedido, id_mat, id_producto,"
+							+ " cantidad, id_etapa, costo_unitario, fecha_inicio, fecha_fin "
+							+ " from CONTENIDO_PEDIDO cp "
+							+ " right join COMPUESTO_DE_PROD cdp on cp.id_producto=cdp.id_producto "
+							+ " right join PRODUCTOS p on p.CODIGO=cp.ID_PRODUCTO "
+							+ " right join COMPUESTO_DE_COMP cc on cdp.ID_COMPONENTE=cc.ID_COMP "
+							+ " right join ETAPAS_PRODUCCION ep on ep.ID_PRODUCTO=cp.id_producto "
+							+ " right join EJECUCION_ETAPA ee on ee.ID_ETAPA=ep.CODIGO "
+							+ " intersect  select id_pedido, id_mat, id_producto, cantidad, id_etapa, costo_unitario, fecha_inicio, fecha_fin "
+							+ " from CONTENIDO_PEDIDO cp1 "
+							+ " left join COMPUESTO_DE_PROD cdp1 on cp1.id_producto=cdp1.id_producto "
+							+ " left join PRODUCTOS p1 on p1.CODIGO=cp1.ID_PRODUCTO "
+							+ " left join COMPUESTO_DE_COMP cc1 on cdp1.ID_COMPONENTE=cc1.ID_COMP "
+							+ " left join ETAPAS_PRODUCCION ep1 on ep1.ID_PRODUCTO=cp1.id_producto "
+							+ " left join EJECUCION_ETAPA ee1 on ee1.ID_ETAPA=ep1.CODIGO");
+				}
+				
+				else if(fechaInicio==null && fechaFin==null && iFiltro==null && filtro == null){
+					prepStmt = conexion.prepareStatement("select id_pedido, id_mat, id_producto,"
+							+ " cantidad, id_etapa, costo_unitario, fecha_inicio, fecha_fin "
+							+ " from CONTENIDO_PEDIDO cp "
+							+ " right join COMPUESTO_DE_PROD cdp on cp.id_producto=cdp.id_producto "
+							+ " right join PRODUCTOS p on p.CODIGO=cp.ID_PRODUCTO "
+							+ " right join COMPUESTO_DE_COMP cc on cdp.ID_COMPONENTE=cc.ID_COMP "
+							+ " right join ETAPAS_PRODUCCION ep on ep.ID_PRODUCTO=cp.id_producto "
+							+ " right join EJECUCION_ETAPA ee on ee.ID_ETAPA=ep.CODIGO "
+							+ " intersect  select id_pedido, id_mat, id_producto, cantidad, id_etapa, costo_unitario, fecha_inicio, fecha_fin "
+							+ " from CONTENIDO_PEDIDO cp1 "
+							+ " left join COMPUESTO_DE_PROD cdp1 on cp1.id_producto=cdp1.id_producto "
+							+ " left join PRODUCTOS p1 on p1.CODIGO=cp1.ID_PRODUCTO "
+							+ " left join COMPUESTO_DE_COMP cc1 on cdp1.ID_COMPONENTE=cc1.ID_COMP "
+							+ " left join ETAPAS_PRODUCCION ep1 on ep1.ID_PRODUCTO=cp1.id_producto "
+							+ " left join EJECUCION_ETAPA ee1 on ee1.ID_ETAPA=ep1.CODIGO");
+				}
+				
+				else if(iFiltro.equals("idPedido")){
+					prepStmt = conexion.prepareStatement("select id_pedido, id_mat, id_producto,"
+							+ " cantidad, id_etapa, costo_unitario, fecha_inicio, fecha_fin "
+							+ " from CONTENIDO_PEDIDO cp "
+							+ " right join COMPUESTO_DE_PROD cdp on cp.id_producto=cdp.id_producto "
+							+ " right join PRODUCTOS p on p.CODIGO=cp.ID_PRODUCTO "
+							+ " right join COMPUESTO_DE_COMP cc on cdp.ID_COMPONENTE=cc.ID_COMP "
+							+ " right join ETAPAS_PRODUCCION ep on ep.ID_PRODUCTO=cp.id_producto "
+							+ " right join EJECUCION_ETAPA ee on ee.ID_ETAPA=ep.CODIGO "
+							+ " intersect  select id_pedido, id_mat, id_producto, cantidad, id_etapa, costo_unitario, fecha_inicio, fecha_fin "
+							+ " from CONTENIDO_PEDIDO cp1 "
+							+ " left join COMPUESTO_DE_PROD cdp1 on cp1.id_producto=cdp1.id_producto "
+							+ " left join PRODUCTOS p1 on p1.CODIGO=cp1.ID_PRODUCTO "
+							+ " left join COMPUESTO_DE_COMP cc1 on cdp1.ID_COMPONENTE=cc1.ID_COMP "
+							+ " left join ETAPAS_PRODUCCION ep1 on ep1.ID_PRODUCTO=cp1.id_producto "
+							+ " left join EJECUCION_ETAPA ee1 on ee1.ID_ETAPA=ep1.CODIGO where fecha_inicio >= TO_DATE('" + c1.get(Calendar.DAY_OF_MONTH) + "/" + month1 + "/" + c1.get(Calendar.YEAR) +"', 'DD-MM-YY') and fecha_fin <= TO_DATE('" + c2.get(Calendar.DAY_OF_MONTH) + "/" + month2 + "/" + c2.get(Calendar.YEAR) +"', 'DD-MM-YY') and id_pedido='"+filtro+"' ");
+				}
+				else if (iFiltro.equals("idMaterial")){
+					prepStmt = conexion.prepareStatement("select id_pedido, id_mat, id_producto,"
+							+ " cantidad, id_etapa, costo_unitario, fecha_inicio, fecha_fin "
+							+ " from CONTENIDO_PEDIDO cp "
+							+ " right join COMPUESTO_DE_PROD cdp on cp.id_producto=cdp.id_producto "
+							+ " right join PRODUCTOS p on p.CODIGO=cp.ID_PRODUCTO "
+							+ " right join COMPUESTO_DE_COMP cc on cdp.ID_COMPONENTE=cc.ID_COMP "
+							+ " right join ETAPAS_PRODUCCION ep on ep.ID_PRODUCTO=cp.id_producto "
+							+ " right join EJECUCION_ETAPA ee on ee.ID_ETAPA=ep.CODIGO "
+							+ " intersect  select id_pedido, id_mat, id_producto, cantidad, id_etapa, costo_unitario, fecha_inicio, fecha_fin "
+							+ " from CONTENIDO_PEDIDO cp1 "
+							+ " left join COMPUESTO_DE_PROD cdp1 on cp1.id_producto=cdp1.id_producto "
+							+ " left join PRODUCTOS p1 on p1.CODIGO=cp1.ID_PRODUCTO "
+							+ " left join COMPUESTO_DE_COMP cc1 on cdp1.ID_COMPONENTE=cc1.ID_COMP "
+							+ " left join ETAPAS_PRODUCCION ep1 on ep1.ID_PRODUCTO=cp1.id_producto "
+							+ " left join EJECUCION_ETAPA ee1 on ee1.ID_ETAPA=ep1.CODIGO where fecha_inicio >= TO_DATE('" + c1.get(Calendar.DAY_OF_MONTH) + "/" + month1 + "/" + c1.get(Calendar.YEAR) +"', 'DD-MM-YY') and fecha_fin <= TO_DATE('" + c2.get(Calendar.DAY_OF_MONTH) + "/" + month2 + "/" + c2.get(Calendar.YEAR) +"', 'DD-MM-YY') and id_mat='"+filtro+"' ");
+				}
+				else if(iFiltro.equals("idProducto")){
+					prepStmt = conexion.prepareStatement("select id_pedido, id_mat, id_producto,"
+							+ " cantidad, id_etapa, costo_unitario, fecha_inicio, fecha_fin "
+							+ " from CONTENIDO_PEDIDO cp "
+							+ " right join COMPUESTO_DE_PROD cdp on cp.id_producto=cdp.id_producto "
+							+ " right join PRODUCTOS p on p.CODIGO=cp.ID_PRODUCTO "
+							+ " right join COMPUESTO_DE_COMP cc on cdp.ID_COMPONENTE=cc.ID_COMP "
+							+ " right join ETAPAS_PRODUCCION ep on ep.ID_PRODUCTO=cp.id_producto "
+							+ " right join EJECUCION_ETAPA ee on ee.ID_ETAPA=ep.CODIGO "
+							+ " intersect  select id_pedido, id_mat, id_producto, cantidad, id_etapa, costo_unitario, fecha_inicio, fecha_fin "
+							+ " from CONTENIDO_PEDIDO cp1 "
+							+ " left join COMPUESTO_DE_PROD cdp1 on cp1.id_producto=cdp1.id_producto "
+							+ " left join PRODUCTOS p1 on p1.CODIGO=cp1.ID_PRODUCTO "
+							+ " left join COMPUESTO_DE_COMP cc1 on cdp1.ID_COMPONENTE=cc1.ID_COMP "
+							+ " left join ETAPAS_PRODUCCION ep1 on ep1.ID_PRODUCTO=cp1.id_producto "
+							+ " left join EJECUCION_ETAPA ee1 on ee1.ID_ETAPA=ep1.CODIGO where fecha_inicio >= TO_DATE('" + c1.get(Calendar.DAY_OF_MONTH) + "/" + month1 + "/" + c1.get(Calendar.YEAR) +"', 'DD-MM-YY') and fecha_fin <= TO_DATE('" + c2.get(Calendar.DAY_OF_MONTH) + "/" + month2 + "/" + c2.get(Calendar.YEAR) +"', 'DD-MM-YY') and id_producto='"+filtro+"' ");
+				}
+				else if(iFiltro.equals("cantidad")){
+					prepStmt = conexion.prepareStatement("select id_pedido, id_mat, id_producto,"
+							+ " cantidad, id_etapa, costo_unitario, fecha_inicio, fecha_fin "
+							+ " from CONTENIDO_PEDIDO cp "
+							+ " right join COMPUESTO_DE_PROD cdp on cp.id_producto=cdp.id_producto "
+							+ " right join PRODUCTOS p on p.CODIGO=cp.ID_PRODUCTO "
+							+ " right join COMPUESTO_DE_COMP cc on cdp.ID_COMPONENTE=cc.ID_COMP "
+							+ " right join ETAPAS_PRODUCCION ep on ep.ID_PRODUCTO=cp.id_producto "
+							+ " right join EJECUCION_ETAPA ee on ee.ID_ETAPA=ep.CODIGO "
+							+ " intersect  select id_pedido, id_mat, id_producto, cantidad, id_etapa, costo_unitario, fecha_inicio, fecha_fin "
+							+ " from CONTENIDO_PEDIDO cp1 "
+							+ " left join COMPUESTO_DE_PROD cdp1 on cp1.id_producto=cdp1.id_producto "
+							+ " left join PRODUCTOS p1 on p1.CODIGO=cp1.ID_PRODUCTO "
+							+ " left join COMPUESTO_DE_COMP cc1 on cdp1.ID_COMPONENTE=cc1.ID_COMP "
+							+ " left join ETAPAS_PRODUCCION ep1 on ep1.ID_PRODUCTO=cp1.id_producto "
+							+ " left join EJECUCION_ETAPA ee1 on ee1.ID_ETAPA=ep1.CODIGO where fecha_inicio >= TO_DATE('" + c1.get(Calendar.DAY_OF_MONTH) + "/" + month1 + "/" + c1.get(Calendar.YEAR) +"', 'DD-MM-YY') and fecha_fin <= TO_DATE('" + c2.get(Calendar.DAY_OF_MONTH) + "/" + month2 + "/" + c2.get(Calendar.YEAR) +"', 'DD-MM-YY') and cantidad='"+filtro+"' ");
+				}
+				else if(iFiltro.equals("idEtapa")){
+					prepStmt = conexion.prepareStatement("select id_pedido, id_mat, id_producto,"
+							+ " cantidad, id_etapa, costo_unitario, fecha_inicio, fecha_fin "
+							+ " from CONTENIDO_PEDIDO cp "
+							+ " right join COMPUESTO_DE_PROD cdp on cp.id_producto=cdp.id_producto "
+							+ " right join PRODUCTOS p on p.CODIGO=cp.ID_PRODUCTO "
+							+ " right join COMPUESTO_DE_COMP cc on cdp.ID_COMPONENTE=cc.ID_COMP "
+							+ " right join ETAPAS_PRODUCCION ep on ep.ID_PRODUCTO=cp.id_producto "
+							+ " right join EJECUCION_ETAPA ee on ee.ID_ETAPA=ep.CODIGO "
+							+ " intersect  select id_pedido, id_mat, id_producto, cantidad, id_etapa, costo_unitario, fecha_inicio, fecha_fin "
+							+ " from CONTENIDO_PEDIDO cp1 "
+							+ " left join COMPUESTO_DE_PROD cdp1 on cp1.id_producto=cdp1.id_producto "
+							+ " left join PRODUCTOS p1 on p1.CODIGO=cp1.ID_PRODUCTO "
+							+ " left join COMPUESTO_DE_COMP cc1 on cdp1.ID_COMPONENTE=cc1.ID_COMP "
+							+ " left join ETAPAS_PRODUCCION ep1 on ep1.ID_PRODUCTO=cp1.id_producto "
+							+ " left join EJECUCION_ETAPA ee1 on ee1.ID_ETAPA=ep1.CODIGO where fecha_inicio >= TO_DATE('" + c1.get(Calendar.DAY_OF_MONTH) + "/" + month1 + "/" + c1.get(Calendar.YEAR) +"', 'DD-MM-YY') and fecha_fin <= TO_DATE('" + c2.get(Calendar.DAY_OF_MONTH) + "/" + month2 + "/" + c2.get(Calendar.YEAR) +"', 'DD-MM-YY') and id_etapa='"+filtro+"' ");
+				}
+				
+				
 				ResultSet rs = prepStmt.executeQuery();
+				
 				
 				while (rs.next()) {
 					
-					String idEtapa = rs.getString("IDETAPA");
-					String idProducto = rs.getString("IDPRODUCTO");
 					String idPedido = rs.getString("ID_PEDIDO");
-					String idMaterial1 = rs.getString("ID_MAT");
-					int numEtapa = rs.getInt("NUM_ETAPA");
-					int cantidad = rs.getInt("CANT");
+					String idMaterial = rs.getString("ID_MAT");
+					String idProducto = rs.getString("ID_PRODUCTO");
+					int cantidad = rs.getInt("CANTIDAD");
+					String idEtapa = rs.getString("ID_ETAPA");
+					int costo = rs.getInt("COSTO_UNITARIO");
 					Date fechaInicio2 = rs.getDate("FECHA_INICIO");
 					Date fechaFin2 = rs.getDate("FECHA_FIN");
 					
-					etapa.setIdEtapa(idEtapa);
-					etapa.setIdProducto(idProducto);
+					
+					int precioFinal = cantidad * costo;
+					
 					etapa.setIdPedido(idPedido);
-					etapa.setIdMaterial(idMaterial1);
-					etapa.setNumEtapa(numEtapa);
+					etapa.setIdMaterial(idMaterial);
+					etapa.setIdProducto(idProducto);
 					etapa.setCantidad(cantidad);
+					etapa.setIdEtapa(idEtapa);
+					etapa.setCostoFinal(precioFinal);
 					etapa.setFechaInicio(fechaInicio2);
 					etapa.setFechaFin(fechaFin2);
 					
 					etapas.add(etapa);
 					
 					etapa = new ConsultaEtapaProduccion();
+					precioFinal = 0;
 					
 				}
 				
@@ -249,23 +361,7 @@ public class ConsultaDAO {
 				else 
 					month2 = ""+(c2.get(Calendar.MONTH)+1);
 				
-				prepStmt = conexion.prepareStatement("select codigo as idetapa,"
-						+ " prod idproducto, id_pedido, id_mat, num_etapa, cant,"
-						+ " fecha_inicio, fecha_fin from contenido_pedido "
-						+ "join (select codigo, prod, num_etapa, cant,"
-						+ " fecha_inicio, fecha_fin, id_mat "
-						+ " from compuesto_de_comp join"
-						+ " (select codigo, prod, num_etapa,"
-						+ " cant, fecha_inicio, fecha_fin, id_componente"
-						+ " from compuesto_de_prod join"
-						+ " (select codigo, id_producto as prod, num_etapa,"
-						+ " cantidad as cant, fecha_inicio, fecha_fin from "
-						+ " ejecucion_etapa join (select codigo, id_producto, "
-						+ " num_etapa, cantidad from etapas_produccion "
-						+ " order by codigo) on id_etapa=codigo) "
-						+ " on compuesto_de_prod.id_producto=prod) "
-						+ " on id_comp=id_componente) "
-						+ " on prod=contenido_pedido.id_producto where fecha_inicio >= TO_DATE('" + c1.get(Calendar.DAY_OF_MONTH) + "/" + month1 + "/" + c1.get(Calendar.YEAR) +"', 'DD-MM-YY') AND fecha_fin <= TO_DATE('" + c2.get(Calendar.DAY_OF_MONTH) + "/" + month2 + "/" + c2.get(Calendar.YEAR) +"', 'DD-MM-YY')  ");
+				prepStmt = conexion.prepareStatement("select codigo as codEtapa, descripcion, fecha_inicio, fecha_fin from ETAPAS_PRODUCCION right join EJECUCION_ETAPA on EJECUCION_ETAPA.ID_ETAPA=ETAPAS_PRODUCCION.CODIGO intersect select codigo as codEtapa, descripcion, fecha_inicio, fecha_fin from ETAPAS_PRODUCCION left join EJECUCION_ETAPA on EJECUCION_ETAPA.ID_ETAPA=ETAPAS_PRODUCCION.CODIGO order by ");
 				ResultSet rs = prepStmt.executeQuery();
 				
 				while (rs.next()) {
@@ -321,42 +417,19 @@ public class ConsultaDAO {
 				else 
 					month2 = ""+(c2.get(Calendar.MONTH)+1);
 				
-				prepStmt = conexion.prepareStatement("select codigo as idetapa,"
-						+ " prod idproducto, id_pedido, id_mat, num_etapa, cant,"
-						+ " fecha_inicio, fecha_fin from contenido_pedido "
-						+ "join (select codigo, prod, num_etapa, cant,"
-						+ " fecha_inicio, fecha_fin, id_mat "
-						+ " from compuesto_de_comp join"
-						+ " (select codigo, prod, num_etapa,"
-						+ " cant, fecha_inicio, fecha_fin, id_componente"
-						+ " from compuesto_de_prod join"
-						+ " (select codigo, id_producto as prod, num_etapa,"
-						+ " cantidad as cant, fecha_inicio, fecha_fin from "
-						+ " ejecucion_etapa join (select codigo, id_producto, "
-						+ " num_etapa, cantidad from etapas_produccion "
-						+ " order by codigo) on id_etapa=codigo) "
-						+ " on compuesto_de_prod.id_producto=prod) "
-						+ " on id_comp=id_componente) "
-						+ " on prod=contenido_pedido.id_producto where fecha_inicio >= TO_DATE('" + c1.get(Calendar.DAY_OF_MONTH) + "/" + month1 + "/" + c1.get(Calendar.YEAR) +"', 'DD-MM-YY') AND fecha_fin <= TO_DATE('" + c2.get(Calendar.DAY_OF_MONTH) + "/" + month2 + "/" + c2.get(Calendar.YEAR) +"', 'DD-MM-YY')  ");
+				prepStmt = conexion.prepareStatement("select codigo as codEtapa, descripcion, fecha_inicio, fecha_fin from ETAPAS_PRODUCCION right join EJECUCION_ETAPA on EJECUCION_ETAPA.ID_ETAPA=ETAPAS_PRODUCCION.CODIGO intersect select codigo as codEtapa, descripcion, fecha_inicio, fecha_fin from ETAPAS_PRODUCCION left join EJECUCION_ETAPA on EJECUCION_ETAPA.ID_ETAPA=ETAPAS_PRODUCCION.CODIGO where fecha_inicio >= TO_DATE('" + c1.get(Calendar.DAY_OF_MONTH) + "/" + month1 + "/" + c1.get(Calendar.YEAR) +"', 'DD-MM-YY') and fecha_fin <= TO_DATE('" + c2.get(Calendar.DAY_OF_MONTH) + "/" + month2 + "/" + c2.get(Calendar.YEAR) +"', 'DD-MM-YY')");
+
 				ResultSet rs = prepStmt.executeQuery();
 				
 				while (rs.next()) {
 					
-					String idEtapa = rs.getString("IDETAPA");
-					String idProducto = rs.getString("IDPRODUCTO");
-					String idPedido = rs.getString("ID_PEDIDO");
-					String idMaterial = rs.getString("ID_MAT");
-					int numEtapa = rs.getInt("NUM_ETAPA");
-					int cantidad = rs.getInt("CANT");
+					String idEtapa = rs.getString("CODETAPA");
+					String nombre = rs.getString("DESCRIPCION");
 					Date fechaInicio2 = rs.getDate("FECHA_INICIO");
 					Date fechaFin2 = rs.getDate("FECHA_FIN");
 					
 					etapa.setIdEtapa(idEtapa);
-					etapa.setIdProducto(idProducto);
-					etapa.setIdPedido(idPedido);
-					etapa.setIdMaterial(idMaterial);
-					etapa.setNumEtapa(numEtapa);
-					etapa.setCantidad(cantidad);
+					etapa.setDescripcion(nombre);
 					etapa.setFechaInicio(fechaInicio2);
 					etapa.setFechaFin(fechaFin2);
 					
@@ -386,22 +459,22 @@ public class ConsultaDAO {
 			PreparedStatement prepStmt = null;
 			ArrayList<String> nombres = new ArrayList<String>();
 			try {
-				prepStmt = conexion.prepareStatement("select distinct id_pedido,"
-						+ " id_producto, id_mat, nombre, cant, costo_unitario"
-						+ " from materias_primas join (select distinct id_pedido,"
-						+ " cant, id_producto, id_mat, costo_unitario "
-						+ " from productos join (select distinct  id_pedido,"
-						+ " idComponente, cant, id_producto, id_mat from"
-						+ " CONTENIDO_PEDIDO_MAT join (select id_producto,"
-						+ " COMPUESTO_DE_PROD.ID_COMPONENTE as idComponente, "
-						+ "COMPUESTO_DE_COMP.CANTIDAD as cant, id_mat from"
-						+ " COMPUESTO_DE_PROD join COMPUESTO_DE_COMP on "
-						+ "COMPUESTO_DE_COMP.ID_COMP=COMPUESTO_DE_PROD.ID_COMPONENTE)"
-						+ " on contenido_pedido_mat.id_comp=idComponente "
-						+ "order by id_pedido) on codigo=id_producto) on codigo=id_mat" );
+				prepStmt = conexion.prepareStatement("select distinct codMaterial from(select id_pedido, codMaterial, codProducto,"
+						+ " cantFinal, costo_unitario from productos join (select codMaterial, "
+						+ "id_producto as codProducto, id_pedido, cantFinal from "
+						+ " compuesto_de_prod inner join (select id_mat as codMaterial, "
+						+ " id_pedido, codComponente, cantFinal from (select id_pedido, "
+						+ " id_comp as codComponente, cantidad as cantFinal from contenido_pedido_mat) "
+						+ " left join (select id_comp as comp, id_mat from compuesto_de_comp) "
+						+ " on codComponente = comp intersect select id_mat as codMaterial, id_pedido, "
+						+ " codComponente, cantFinal from (select id_pedido, id_comp as codComponente, "
+						+ " cantidad as cantFinal from contenido_pedido_mat) right join "
+						+ " (select id_comp as comp, id_mat from compuesto_de_comp) on "
+						+ " codComponente = comp) on codComponente = compuesto_de_prod.ID_COMPONENTE) "
+						+ " on codProducto=productos.CODIGO ) order by codMaterial" );
 				ResultSet rs = prepStmt.executeQuery();
 				while (rs.next()) {
-					String nombre = rs.getString("ID_MAT");
+					String nombre = rs.getString("CODMATERIAL");
 					nombres.add(nombre);
 					}
 
@@ -428,26 +501,25 @@ public class ConsultaDAO {
 			Pedidos2 pedido = new Pedidos2();
 			
 			try {
-				prepStmt = conexion.prepareStatement("select distinct id_pedido,"
-						+ " id_producto, id_mat, nombre, cant, costo_unitario"
-						+ " from materias_primas join (select distinct id_pedido,"
-						+ " cant, id_producto, id_mat, costo_unitario "
-						+ " from productos join (select distinct  id_pedido,"
-						+ " idComponente, cant, id_producto, id_mat from"
-						+ " CONTENIDO_PEDIDO_MAT join (select id_producto,"
-						+ " COMPUESTO_DE_PROD.ID_COMPONENTE as idComponente, "
-						+ "COMPUESTO_DE_COMP.CANTIDAD as cant, id_mat from"
-						+ " COMPUESTO_DE_PROD join COMPUESTO_DE_COMP on "
-						+ "COMPUESTO_DE_COMP.ID_COMP=COMPUESTO_DE_PROD.ID_COMPONENTE)"
-						+ " on contenido_pedido_mat.id_comp=idComponente "
-						+ "order by id_pedido) on codigo=id_producto) on codigo=id_mat where nombre='"+tipoMaterial+"'" );
+				prepStmt = conexion.prepareStatement("select id_pedido, codMaterial, codProducto,"
+						+ " cantFinal, costo_unitario from productos join (select codMaterial, "
+						+ "id_producto as codProducto, id_pedido, cantFinal from "
+						+ " compuesto_de_prod inner join (select id_mat as codMaterial, "
+						+ " id_pedido, codComponente, cantFinal from (select id_pedido, "
+						+ " id_comp as codComponente, cantidad as cantFinal from contenido_pedido_mat) "
+						+ " left join (select id_comp as comp, id_mat from compuesto_de_comp) "
+						+ " on codComponente = comp intersect select id_mat as codMaterial, id_pedido, "
+						+ " codComponente, cantFinal from (select id_pedido, id_comp as codComponente, "
+						+ " cantidad as cantFinal from contenido_pedido_mat) right join "
+						+ " (select id_comp as comp, id_mat from compuesto_de_comp) on "
+						+ " codComponente = comp) on codComponente = compuesto_de_prod.ID_COMPONENTE) "
+						+ " on codProducto=productos.CODIGO  where codMaterial='"+tipoMaterial+"' " );
 				ResultSet rs = prepStmt.executeQuery();
 				while (rs.next()) {
 					String idPedido = rs.getString("ID_PEDIDO");
-					String idProducto = rs.getString("ID_PRODUCTO");
-					String idMaterial = rs.getString("ID_MAT");
-					String nombre = rs.getString("NOMBRE");
-					int cantidad = rs.getInt("CANT");
+					String codMaterial = rs.getString("CODMATERIAL");
+					String codProducto = rs.getString("CODPRODUCTO");
+					int cantidad = rs.getInt("CANTFINAL");
 					int costoUnitario = rs.getInt("COSTO_UNITARIO");
 					
 					int costoTotal = costoUnitario * cantidad;
@@ -455,9 +527,8 @@ public class ConsultaDAO {
 					if( costoTotal >= costo){
 					
 					pedido.setIdPedido(idPedido);
-					pedido.setIdProducto(idProducto);
-					pedido.setIdMaterial(idMaterial);
-					pedido.setNombre(nombre);
+					pedido.setIdMaterial(codMaterial);
+					pedido.setIdProducto(codProducto);
 					pedido.setCantidad(cantidad);
 					pedido.setCosto(costoTotal);
 					
@@ -533,21 +604,26 @@ public class ConsultaDAO {
 			ArrayList<String> idsMaterial = new ArrayList<String>();
 			
 			try {
-				prepStmt = conexion.prepareStatement("select distinct id_mat, ped,"
-						+ " email_cliente, fecha_pedido, fecha_entrega, estado,"
-						+ " cant from (select id_mat, ped, email_cliente,"
-						+ " fecha_pedido, fecha_entrega, estado, cant,"
-						+ " id_comp as comp  from (select pedidos_clientes.id_pedido"
-						+ " as ped, email_cliente, fecha_pedido, fecha_entrega, estado,"
-						+ " id_comp as idcomp, cantidad from PEDIDOS_CLIENTES"
-						+ " join contenido_pedido_mat"
-						+ " on pedidos_clientes.id_pedido=contenido_pedido_mat.id_pedido)"
-						+ " join (select id_comp, id_mat, cantidad as cant from compuesto_de_comp)"
-						+ " on idcomp=id_comp order by ped) join (select codigo, id_producto, id_comp"
-						+ " from etapas_produccion where num_etapa between 1 and 9) on comp = id_comp" );
+				prepStmt = conexion.prepareStatement("select distinct idMat from (select codigo, "
+						+ " id_producto, num_etapa, codPedido, email_cliente, fecha_pedido, "
+						+ " fecha_entrega, estado, idComp, cant, idMat from etapas_produccion "
+						+ " inner join (select codPedido, email_cliente, fecha_pedido, "
+						+ " fecha_entrega, estado, idComp, cant, id_mat as idMat "
+						+ " from compuesto_de_comp inner join (select codPedido, email_cliente, "
+						+ " fecha_pedido, fecha_entrega, estado, idComp, cant from "
+						+ " (select id_pedido as codPedido, email_cliente, fecha_pedido, "
+						+ " fecha_entrega, estado from pedidos_clientes) left join "
+						+ " (select id_pedido as idPedido, id_comp as idComp, cantidad as "
+						+ " cant from contenido_pedido_mat) on codPedido=idPedido intersect "
+						+ " select codPedido, email_cliente, fecha_pedido, fecha_entrega, estado, "
+						+ " idComp, cant from (select id_pedido as codPedido, email_cliente, "
+						+ " fecha_pedido, fecha_entrega, estado from pedidos_clientes) right join "
+						+ " (select id_pedido as idPedido, id_comp as idComp, cantidad as cant from "
+						+ " contenido_pedido_mat) on codPedido=idPedido) on "
+						+ " idComp=compuesto_de_comp.ID_COMP) on idComp=etapas_produccion.ID_COMP) order by idMat" );
 				ResultSet rs = prepStmt.executeQuery();
 				while (rs.next()) {
-					String idMat = rs.getString("ID_MAT");
+					String idMat = rs.getString("IDMAT");
 					idsMaterial.add(idMat);
 				}
 			} catch (Exception e) {
@@ -566,43 +642,52 @@ public class ConsultaDAO {
 			return idsMaterial;
 		}
 		
-		public ArrayList<PedidoMaterial2> consultarMaterial2(String identificacdorMaterial) throws Exception{
+		public ArrayList<PedidoMaterial2> consultarMaterial2(String identificadorMaterial) throws Exception{
 			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
 			PreparedStatement prepStmt = null;
 			ArrayList<PedidoMaterial2> pedidosMaterial = new ArrayList<PedidoMaterial2>();
 			PedidoMaterial2 pedidoMaterial = new PedidoMaterial2();
 			
 			try {
-				prepStmt = conexion.prepareStatement("select distinct id_mat, ped,"
-						+ " email_cliente, fecha_pedido, fecha_entrega, estado, cant from"
-						+ " (select id_mat, ped, email_cliente, fecha_pedido,"
-						+ " fecha_entrega, estado, cant, id_comp as comp  from "
-						+ "(select pedidos_clientes.id_pedido as ped, email_cliente, "
-						+ "fecha_pedido, fecha_entrega, estado, id_comp as idcomp, "
-						+ "cantidad from PEDIDOS_CLIENTES join contenido_pedido_mat"
-						+ " on pedidos_clientes.id_pedido=contenido_pedido_mat.id_pedido)"
-						+ " join (select id_comp, id_mat, cantidad as cant"
-						+ " from compuesto_de_comp) on idcomp=id_comp order by ped)"
-						+ " join (select codigo, id_producto, id_comp"
-						+ " from etapas_produccion where num_etapa between 1 and 9)"
-						+ " on comp = id_comp where id_mat='"+identificacdorMaterial+"'" );
+				prepStmt = conexion.prepareStatement("select codigo, id_producto, "
+						+ " codPedido, email_cliente, fecha_pedido, fecha_entrega, estado,"
+						+ " idComp, cant, idMat from etapas_produccion inner join"
+						+ " (select codPedido, email_cliente, fecha_pedido, fecha_entrega, "
+						+ "estado, idComp, cant, id_mat as idMat from compuesto_de_comp inner join "
+						+ "(select codPedido, email_cliente, fecha_pedido, fecha_entrega, estado, idComp,"
+						+ " cant from (select id_pedido as codPedido, email_cliente, fecha_pedido, "
+						+ " fecha_entrega, estado from pedidos_clientes)"
+						+ " left join (select id_pedido as idPedido, id_comp as idComp, cantidad as cant from contenido_pedido_mat) "
+						+ " on codPedido=idPedido intersect select codPedido, email_cliente, fecha_pedido, fecha_entrega, estado, idComp, cant from "
+						+ " (select id_pedido as codPedido, email_cliente, fecha_pedido, fecha_entrega, estado from pedidos_clientes) "
+						+ " right join (select id_pedido as idPedido, id_comp as idComp, cantidad as cant from contenido_pedido_mat) on codPedido=idPedido) "
+						+ " on idComp=compuesto_de_comp.ID_COMP) on idComp=etapas_produccion.ID_COMP where idMat='"+identificadorMaterial+"'" );
 				ResultSet rs = prepStmt.executeQuery();
 				while (rs.next()) {
-					String idMaterial = rs.getString("ID_MAT");
-					String idPedido = rs.getString("PED");
-					String emailCliente = rs.getString("EMAIL_CLIENTE");
+					
+					String codEtapa = rs.getString("CODIGO");
+					String idProducto = rs.getString("ID_PRODUCTO");
+					String codPedido = rs.getString("CODPEDIDO");
+					String emailCliente = rs.getString("EMAIL_CLIENTE"); 
 					Date fechaPedido = rs.getDate("FECHA_PEDIDO");
 					Date fechaEntrega = rs.getDate("FECHA_ENTREGA");
 					String estado = rs.getString("ESTADO");
+					String idComponente = rs.getString("IDCOMP");
 					int cantidad = rs.getInt("CANT");
+					String idMaterial = rs.getString("IDMAT");
 					
-					pedidoMaterial.setIdMaterial(idMaterial);
-					pedidoMaterial.setIdPedido(idPedido);
+					
+					pedidoMaterial.setCodEtapa(codEtapa);
+					pedidoMaterial.setIdProducto(idProducto);
+					pedidoMaterial.setIdPedido(codPedido);
 					pedidoMaterial.setEmailCliente(emailCliente);
 					pedidoMaterial.setFechaPedido(fechaPedido);
 					pedidoMaterial.setFechaEntrega(fechaEntrega);
 					pedidoMaterial.setEstado(estado);
+					pedidoMaterial.setIdComponente(idComponente);
 					pedidoMaterial.setCantidad(cantidad);
+					pedidoMaterial.setIdMaterial(idMaterial);
+					
 					
 					pedidosMaterial.add(pedidoMaterial);
 					pedidoMaterial = new PedidoMaterial2();

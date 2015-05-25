@@ -195,7 +195,7 @@ public class ProdAndes {
 	public ArrayList<String> consultarMaterialEtapasProduccion(String fechaInicio, String fechaFin) throws Exception{
 		return dao.consultaEtapaProdccion2Material(fechaInicio, fechaFin);
 	}
-	public ArrayList<ConsultaEtapaProduccion> consultarEtapasProduccion1(String fechaInicio, String fechaFin, String idMaterial) throws Exception{
-		return dao.consultaEtapaProdccion1ConFiltro(fechaInicio, fechaFin, idMaterial);
+	public ArrayList<ConsultaEtapaProduccion> consultarEtapasProduccion1(String fechaInicio, String fechaFin, String iFiltro, String filtro) throws Exception{
+		return dao.consultaEtapaProdccion1ConFiltro(fechaInicio, fechaFin, iFiltro, filtro);
 	}
 }

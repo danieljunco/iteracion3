@@ -19,6 +19,10 @@ public class ConsultaEtapaProduccion {
 	private Date fechaInicio;
 	
 	private Date fechaFin;
+	
+	private String descripcion;
+	
+	private int costoFinal;
 
 	public String getIdEtapa() {
 		return idEtapa;
@@ -82,6 +86,34 @@ public class ConsultaEtapaProduccion {
 
 	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
+	}
+
+	/**
+	 * @return the descripcion
+	 */
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	/**
+	 * @param descripcion the descripcion to set
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	/**
+	 * @return the costoFinal
+	 */
+	public int getCostoFinal() {
+		return costoFinal;
+	}
+
+	/**
+	 * @param costoFinal the costoFinal to set
+	 */
+	public void setCostoFinal(int costoFinal) {
+		this.costoFinal = costoFinal;
 	}
 	
 	
