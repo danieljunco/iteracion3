@@ -18,6 +18,7 @@ import prodAndes.vos.Pedidos2;
 import prodAndes.vos.Producto;
 import prodAndes.vos.ProductoCantidad;
 import prodAndes.vos.Proveedor;
+import prodAndes.vos.RFC13;
 import prodAndes.vos.ReqPedidoCliente;
 import prodAndes.vos.ReqPedidoProveedor;
 
@@ -197,5 +198,8 @@ public class ProdAndes {
 	}
 	public ArrayList<ConsultaEtapaProduccion> consultarEtapasProduccion1(String fechaInicio, String fechaFin, String iFiltro, String filtro) throws Exception{
 		return dao.consultaEtapaProdccion1ConFiltro(fechaInicio, fechaFin, iFiltro, filtro);
+	}
+	public ArrayList<RFC13> consultarMaterialesMasUtilizados() throws Exception{
+		return dao.consultarMaterialesMasUtilizados();
 	}
 }

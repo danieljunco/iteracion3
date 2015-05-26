@@ -119,6 +119,12 @@
 		<servlet-name>ServletFinalRFC8</servlet-name>
 		<servlet-class>prodAndes.servlets.ServletFinalRFC8</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>ServletRFC13</servlet-name>
+		<servlet-class>prodAndes.servlets.ServletFinalRFC13</servlet-class>
+	</servlet>
+	
 	<!-- MAPPING -->
 
 	<servlet-mapping>
@@ -232,6 +238,11 @@
 	<servlet-mapping>
 		<servlet-name>ServletFinalRFC8</servlet-name>
 		<url-pattern>/FRFC8.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ServletFinalRFC13</servlet-name>
+		<url-pattern>/RFC13.htm</url-pattern>
 	</servlet-mapping>
 
 </web-app>

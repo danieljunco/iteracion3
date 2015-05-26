@@ -29,6 +29,7 @@ import prodAndes.vos.Pedidos2;
 import prodAndes.vos.Producto;
 import prodAndes.vos.ProductoCantidad;
 import prodAndes.vos.Proveedor;
+import prodAndes.vos.RFC13;
 import prodAndes.vos.ReqPedidoCliente;
 import prodAndes.vos.ReqPedidoProveedor;
 
@@ -134,6 +135,40 @@ public class ConsultaDAO {
 		}
 		
 
+		public ArrayList<RFC13> consultarMaterialesMasUtilizados() throws Exception{
+			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
+			PreparedStatement prepStmt = null;
+			ArrayList<RFC13> cuentas = new ArrayList<RFC13>();
+			RFC13 cuenta = new RFC13();
+			
+			try {
+				prepStmt = conexion.prepareStatement("select id_mat, cuenta from (select id_mat, count(id_mat) as cuenta from( select codigo, id_mat, y.CANTIDAD from ETAPAS_PRODUCCION x inner join COMPUESTO_DE_COMP y on x.id_comp=y.id_comp) group by id_mat) where cuenta = (select max(cuenta) from (select id_mat, count(id_mat) as cuenta from( select codigo, id_mat, y.CANTIDAD from ETAPAS_PRODUCCION x inner join COMPUESTO_DE_COMP y on x.id_comp=y.id_comp) group by id_mat))" );
+				ResultSet rs = prepStmt.executeQuery();
+				while (rs.next()) {
+					String idMaterial = rs.getString("ID_MAT");
+					int count = rs.getInt("CUENTA");
+					cuenta.setIdMaterial(idMaterial);
+					cuenta.setCuenta(count);
+					cuentas.add(cuenta);
+					cuenta = new RFC13();
+					}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			finally{
+				if(prepStmt!=null){
+					try {
+						prepStmt.close();
+					} catch (SQLException e2) {
+						throw new Exception("ERROR: ConsultaDAO: loadRow() = cerrando conexion.");
+					}
+				}
+			}
+			closeConnection(conexion);
+			return cuentas;
+			
+		}
 		
 		public ArrayList<ConsultaEtapaProduccion> consultaEtapaProdccion1ConFiltro(String fechaInicio, String fechaFin, String iFiltro, String filtro) throws Exception {
 			establecerConexion(RUTA_DB, USER_DB, PASS_DB);
